@@ -1,5 +1,3 @@
-using static Interop.LibPlist;
-
 namespace PlistSharp
 {
     public class PlistBoolean : PlistNode
@@ -17,13 +15,13 @@ namespace PlistSharp
         public PlistBoolean(PlistBoolean b)
             : base(plist_type.PLIST_BOOLEAN)
         {
-            plist_set_bool_val(_node, BoolToByte(b.GetValue()));
+            LibPlist.plist_set_bool_val(_node, BoolToByte(b.GetValue()));
         }
 
         public PlistBoolean(bool b)
             : base(plist_type.PLIST_BOOLEAN)
         {
-            plist_set_bool_val(_node, BoolToByte(b));
+            LibPlist.plist_set_bool_val(_node, BoolToByte(b));
         }
 
         public override PlistNode Clone()
@@ -33,12 +31,12 @@ namespace PlistSharp
 
         public void SetValue(bool b)
         {
-            plist_set_bool_val(_node, BoolToByte(b));
+            LibPlist.plist_set_bool_val(_node, BoolToByte(b));
         }
 
         public bool GetValue()
         {
-            plist_get_bool_val(_node, out byte b);
+            LibPlist.plist_get_bool_val(_node, out byte b);
             return b != 0;
         }
 

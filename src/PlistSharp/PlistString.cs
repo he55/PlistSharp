@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using static Interop.LibPlist;
 
 namespace PlistSharp
 {
@@ -19,13 +18,13 @@ namespace PlistSharp
         public PlistString(PlistString s)
             : base(plist_type.PLIST_STRING)
         {
-            plist_set_string_val(_node, s.GetValue());
+            LibPlist.plist_set_string_val(_node, s.GetValue());
         }
 
         public PlistString(string s)
             : base(plist_type.PLIST_STRING)
         {
-            plist_set_string_val(_node, s);
+            LibPlist.plist_set_string_val(_node, s);
         }
 
         public override PlistNode Clone()
@@ -35,12 +34,12 @@ namespace PlistSharp
 
         public void SetValue(string s)
         {
-            plist_set_string_val(_node, s);
+            LibPlist.plist_set_string_val(_node, s);
         }
 
         public string GetValue()
         {
-            plist_get_string_val(_node, out IntPtr s);
+            LibPlist.plist_get_string_val(_node, out IntPtr s);
             if (s == IntPtr.Zero)
             {
                 return string.Empty;

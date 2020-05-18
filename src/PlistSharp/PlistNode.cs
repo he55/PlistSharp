@@ -1,5 +1,4 @@
 using System;
-using static Interop.LibPlist;
 
 namespace PlistSharp
 {
@@ -27,35 +26,35 @@ namespace PlistSharp
             switch (type)
             {
                 case plist_type.PLIST_BOOLEAN:
-                    _node = plist_new_bool(0);
+                    _node = LibPlist.plist_new_bool(0);
                     break;
                 case plist_type.PLIST_UINT:
-                    _node = plist_new_uint(0);
+                    _node = LibPlist.plist_new_uint(0);
                     break;
                 case plist_type.PLIST_REAL:
-                    _node = plist_new_real(0.0);
+                    _node = LibPlist.plist_new_real(0.0);
                     break;
                 case plist_type.PLIST_STRING:
-                    _node = plist_new_string(string.Empty);
+                    _node = LibPlist.plist_new_string(string.Empty);
                     break;
                 case plist_type.PLIST_KEY:
-                    _node = plist_new_string(string.Empty);
-                    plist_set_key_val(_node, string.Empty);
+                    _node = LibPlist.plist_new_string(string.Empty);
+                    LibPlist.plist_set_key_val(_node, string.Empty);
                     break;
                 case plist_type.PLIST_UID:
-                    _node = plist_new_uid(0);
+                    _node = LibPlist.plist_new_uid(0);
                     break;
                 case plist_type.PLIST_DATA:
-                    _node = plist_new_data(IntPtr.Zero, 0);
+                    _node = LibPlist.plist_new_data(IntPtr.Zero, 0);
                     break;
                 case plist_type.PLIST_DATE:
-                    _node = plist_new_date(0, 0);
+                    _node = LibPlist.plist_new_date(0, 0);
                     break;
                 case plist_type.PLIST_ARRAY:
-                    _node = plist_new_array();
+                    _node = LibPlist.plist_new_array();
                     break;
                 case plist_type.PLIST_DICT:
-                    _node = plist_new_dict();
+                    _node = LibPlist.plist_new_dict();
                     break;
                 case plist_type.PLIST_NONE:
                 default:
@@ -74,7 +73,7 @@ namespace PlistSharp
             {
                 return plist_type.PLIST_NONE;
             }
-            return plist_get_node_type(_node);
+            return LibPlist.plist_get_node_type(_node);
         }
 
         public plist_t GetPlist()
@@ -95,7 +94,7 @@ namespace PlistSharp
                 return ret;
             }
 
-            plist_type type = plist_get_node_type(node);
+            plist_type type = LibPlist.plist_get_node_type(node);
             switch (type)
             {
                 case plist_type.PLIST_DICT:
@@ -129,18 +128,18 @@ namespace PlistSharp
                     ret = new PlistData(node, parent);
                     break;
                 default:
-                    plist_free(node);
+                    LibPlist.plist_free(node);
                     break;
             }
             return ret;
         }
 
         #region IDisposable Support
-        private bool disposed = false; // To detect redundant calls
+        private bool _disposed = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
@@ -148,11 +147,11 @@ namespace PlistSharp
                 }
 
                 if (_parent == null)
-                    plist_free(_node);
+                    LibPlist.plist_free(_node);
 
                 _node = (plist_t)IntPtr.Zero;
 
-                disposed = true;
+                _disposed = true;
             }
         }
 

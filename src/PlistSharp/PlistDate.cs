@@ -1,5 +1,3 @@
-using static Interop.LibPlist;
-
 namespace PlistSharp
 {
     public class PlistDate : PlistNode
@@ -18,13 +16,13 @@ namespace PlistSharp
             : base(plist_type.PLIST_DATE)
         {
             timeval t = d.GetValue();
-            plist_set_date_val(_node, (int)t.tv_sec, t.tv_usec);
+            LibPlist.plist_set_date_val(_node, (int)t.tv_sec, t.tv_usec);
         }
 
         public PlistDate(timeval t)
             : base(plist_type.PLIST_DATE)
         {
-            plist_set_date_val(_node, (int)t.tv_sec, t.tv_usec);
+            LibPlist.plist_set_date_val(_node, (int)t.tv_sec, t.tv_usec);
         }
 
         public override PlistNode Clone()
@@ -34,15 +32,17 @@ namespace PlistSharp
 
         public void SetValue(timeval t)
         {
-            plist_set_date_val(_node, (int)t.tv_sec, t.tv_usec);
+            LibPlist.plist_set_date_val(_node, (int)t.tv_sec, t.tv_usec);
         }
 
         public timeval GetValue()
         {
-            plist_get_date_val(_node, out int tv_sec, out int tv_usec);
-            timeval t = new timeval();
-            t.tv_sec = tv_sec;
-            t.tv_usec = tv_usec;
+            LibPlist.plist_get_date_val(_node, out int tv_sec, out int tv_usec);
+            timeval t = new timeval
+            {
+                tv_sec = tv_sec,
+                tv_usec = tv_usec
+            };
             return t;
         }
     }

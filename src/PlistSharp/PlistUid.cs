@@ -1,5 +1,3 @@
-using static Interop.LibPlist;
-
 namespace PlistSharp
 {
     public class PlistUid : PlistNode
@@ -17,13 +15,13 @@ namespace PlistSharp
         public PlistUid(PlistUid i)
             : base(plist_type.PLIST_UID)
         {
-            plist_set_uid_val(_node, i.GetValue());
+            LibPlist.plist_set_uid_val(_node, i.GetValue());
         }
 
         public PlistUid(ulong i)
             : base(plist_type.PLIST_UID)
         {
-            plist_set_uid_val(_node, i);
+            LibPlist.plist_set_uid_val(_node, i);
         }
 
         public override PlistNode Clone()
@@ -33,12 +31,12 @@ namespace PlistSharp
 
         public void SetValue(ulong i)
         {
-            plist_set_uid_val(_node, i);
+            LibPlist.plist_set_uid_val(_node, i);
         }
 
         public ulong GetValue()
         {
-            plist_get_uid_val(_node, out ulong i);
+            LibPlist.plist_get_uid_val(_node, out ulong i);
             return i;
         }
     }

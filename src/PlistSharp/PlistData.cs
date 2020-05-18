@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using static Interop.LibPlist;
 
 namespace PlistSharp
 {
@@ -23,7 +22,7 @@ namespace PlistSharp
             GCHandle gcHandle = GCHandle.Alloc(b, GCHandleType.Pinned);
             IntPtr p = gcHandle.AddrOfPinnedObject();
 
-            plist_set_data_val(_node, p, (ulong)b.Length);
+            LibPlist.plist_set_data_val(_node, p, (ulong)b.Length);
             gcHandle.Free();
         }
 
@@ -33,7 +32,7 @@ namespace PlistSharp
             GCHandle gcHandle = GCHandle.Alloc(buff, GCHandleType.Pinned);
             IntPtr p = gcHandle.AddrOfPinnedObject();
 
-            plist_set_data_val(_node, p, (ulong)buff.Length);
+            LibPlist.plist_set_data_val(_node, p, (ulong)buff.Length);
             gcHandle.Free();
         }
 
@@ -47,13 +46,13 @@ namespace PlistSharp
             GCHandle gcHandle = GCHandle.Alloc(buff, GCHandleType.Pinned);
             IntPtr p = gcHandle.AddrOfPinnedObject();
 
-            plist_set_data_val(_node, p, (ulong)buff.Length);
+            LibPlist.plist_set_data_val(_node, p, (ulong)buff.Length);
             gcHandle.Free();
         }
 
         public byte[] GetValue()
         {
-            plist_get_data_val(_node, out IntPtr buff, out ulong length);
+            LibPlist.plist_get_data_val(_node, out IntPtr buff, out ulong length);
 
             byte[] ret = new byte[length];
             Marshal.Copy(buff, ret, 0, (int)length);

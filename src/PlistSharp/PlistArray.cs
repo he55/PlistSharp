@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using static Interop.LibPlist;
 
 namespace PlistSharp
 {
@@ -25,7 +24,7 @@ namespace PlistSharp
         public PlistArray(PlistArray a)
             : base()
         {
-            _node = plist_copy(a.GetPlist());
+            _node = LibPlist.plist_copy(a.GetPlist());
             array_fill(_node);
         }
 
@@ -43,7 +42,7 @@ namespace PlistSharp
             {
                 PlistNode clone = value.Clone();
                 UpdateNodeParent(clone);
-                plist_array_insert_item(_node, clone.GetPlist(), (uint)index);
+                LibPlist.plist_array_insert_item(_node, clone.GetPlist(), (uint)index);
                 _array[index] = clone;
             }
         }
@@ -59,14 +58,14 @@ namespace PlistSharp
         {
             PlistNode clone = item.Clone();
             UpdateNodeParent(clone);
-            plist_array_insert_item(_node, clone.GetPlist(), (uint)index);
+            LibPlist.plist_array_insert_item(_node, clone.GetPlist(), (uint)index);
             _array.Insert(index, clone);
         }
 
         /// <inheritdoc />
         public void RemoveAt(int index)
         {
-            plist_array_remove_item(_node, (uint)index);
+            LibPlist.plist_array_remove_item(_node, (uint)index);
             _array.RemoveAt(index);
         }
 
@@ -75,7 +74,7 @@ namespace PlistSharp
         {
             PlistNode clone = item.Clone();
             UpdateNodeParent(clone);
-            plist_array_append_item(_node, clone.GetPlist());
+            LibPlist.plist_array_append_item(_node, clone.GetPlist());
             _array.Add(clone);
         }
 
@@ -84,7 +83,7 @@ namespace PlistSharp
         {
             for (int i = 0; i < _array.Count; i++)
             {
-                plist_array_remove_item(_node, 0);
+                LibPlist.plist_array_remove_item(_node, 0);
             }
             _array.Clear();
         }
@@ -103,7 +102,7 @@ namespace PlistSharp
             {
                 PlistNode clone = array[i].Clone();
                 UpdateNodeParent(clone);
-                plist_array_insert_item(_node, clone.GetPlist(), (uint)(arrayIndex + i));
+                LibPlist.plist_array_insert_item(_node, clone.GetPlist(), (uint)(arrayIndex + i));
                 clones[i] = clone;
             }
             _array.CopyTo(clones, arrayIndex);
@@ -113,7 +112,7 @@ namespace PlistSharp
         bool ICollection<PlistNode>.Remove(PlistNode item)
         {
             int index = _array.IndexOf(item);
-            plist_array_remove_item(_node, (uint)index);
+            LibPlist.plist_array_remove_item(_node, (uint)index);
             return _array.Remove(item);
         }
 
@@ -138,27 +137,25 @@ namespace PlistSharp
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                uint length = plist_array_get_size(node);
+                uint length = LibPlist.plist_array_get_size(node);
                 for (uint i = 0; i < length; i++)
                 {
-                    plist_t item = plist_array_get_item(node, i);
-                    _array.Add(PlistNode.FromPlist(item, this)!);
+                    plist_t item = LibPlist.plist_array_get_item(node, i);
+                    _array.Add(FromPlist(item, this)!);
                 }
                 return;
             }
 
-            plist_array_new_iter(node, out plist_array_iter iter);
+            LibPlist.plist_array_new_iter(node, out plist_array_iter iter);
 
-            plist_t subnode;
             while (true)
             {
-                subnode = (plist_t)IntPtr.Zero;
-                plist_array_next_item(node, iter, out subnode);
+                LibPlist.plist_array_next_item(node, iter, out plist_t subnode);
                 if (subnode == IntPtr.Zero)
                 {
                     break;
                 }
-                _array.Add(PlistNode.FromPlist(subnode, this)!);
+                _array.Add(FromPlist(subnode, this)!);
             }
             Marshal.FreeHGlobal(iter);
         }

@@ -1,5 +1,3 @@
-using static Interop.LibPlist;
-
 namespace PlistSharp
 {
     public class PlistReal : PlistNode
@@ -17,13 +15,13 @@ namespace PlistSharp
         public PlistReal(PlistReal d)
             : base(plist_type.PLIST_REAL)
         {
-            plist_set_real_val(_node, d.GetValue());
+            LibPlist.plist_set_real_val(_node, d.GetValue());
         }
 
         public PlistReal(double d)
             : base(plist_type.PLIST_REAL)
         {
-            plist_set_real_val(_node, d);
+            LibPlist.plist_set_real_val(_node, d);
         }
 
         public override PlistNode Clone()
@@ -33,12 +31,12 @@ namespace PlistSharp
 
         public void SetValue(double d)
         {
-            plist_set_real_val(_node, d);
+            LibPlist.plist_set_real_val(_node, d);
         }
 
         public double GetValue()
         {
-            plist_get_real_val(_node, out double d);
+            LibPlist.plist_get_real_val(_node, out double d);
             return d;
         }
     }

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using static Interop.LibPlist;
 
 namespace PlistSharp
 {
@@ -25,7 +24,7 @@ namespace PlistSharp
         public PlistDictionary(PlistDictionary d)
             : base()
         {
-            _node = plist_copy(d.GetPlist());
+            _node = LibPlist.plist_copy(d.GetPlist());
             dictionary_fill(_node);
         }
 
@@ -49,7 +48,7 @@ namespace PlistSharp
             {
                 PlistNode clone = value.Clone();
                 UpdateNodeParent(clone);
-                plist_dict_set_item(_node, key, clone.GetPlist());
+                LibPlist.plist_dict_set_item(_node, key, clone.GetPlist());
                 _map[key] = clone;
             }
         }
@@ -59,7 +58,7 @@ namespace PlistSharp
         {
             PlistNode clone = value.Clone();
             UpdateNodeParent(clone);
-            plist_dict_set_item(_node, key, clone.GetPlist());
+            LibPlist.plist_dict_set_item(_node, key, clone.GetPlist());
             _map.Add(key, clone);
         }
 
@@ -72,7 +71,7 @@ namespace PlistSharp
         /// <inheritdoc />
         public bool Remove(string key)
         {
-            plist_dict_remove_item(_node, key);
+            LibPlist.plist_dict_remove_item(_node, key);
             return _map.Remove(key);
         }
 
@@ -87,16 +86,16 @@ namespace PlistSharp
         {
             PlistNode clone = item.Value.Clone();
             UpdateNodeParent(clone);
-            plist_dict_set_item(_node, item.Key, clone.GetPlist());
+            LibPlist.plist_dict_set_item(_node, item.Key, clone.GetPlist());
             _map.Add(KeyValuePair.Create(item.Key, clone));
         }
 
         /// <inheritdoc />
         public void Clear()
         {
-            foreach (var key in _map.Keys)
+            foreach (string key in _map.Keys)
             {
-                plist_dict_remove_item(_node, key);
+                LibPlist.plist_dict_remove_item(_node, key);
             }
             _map.Clear();
         }
@@ -115,7 +114,7 @@ namespace PlistSharp
             {
                 PlistNode clone = array[i].Value.Clone();
                 UpdateNodeParent(clone);
-                plist_dict_set_item(_node, array[i].Key, clone.GetPlist());
+                LibPlist.plist_dict_set_item(_node, array[i].Key, clone.GetPlist());
                 clones[i] = KeyValuePair.Create(array[i].Key, clone);
             }
             _map.CopyTo(clones, arrayIndex);
@@ -124,7 +123,7 @@ namespace PlistSharp
         /// <inheritdoc />
         public bool Remove(KeyValuePair<string, PlistNode> item)
         {
-            plist_dict_remove_item(_node, item.Key);
+            LibPlist.plist_dict_remove_item(_node, item.Key);
             return _map.Remove(item);
         }
 
@@ -145,64 +144,31 @@ namespace PlistSharp
             return new PlistDictionary(this);
         }
 
-        // public PlistNode? Begin()
-        // {
-        //     foreach (var item in _map)
-        //     {
-        //         return item.Value;
-        //     }
-        //     return null;
-        // }
+        public override void Remove(PlistNode node)
+        {
+            LibPlist.plist_dict_get_item_key(node.GetPlist(), out IntPtr key);
+            LibPlist.plist_dict_remove_item(_node, key);
 
-        // public PlistNode? End()
-        // {
-        //     PlistNode? node = null;
-        //     foreach (var item in _map)
-        //     {
-        //         node = item.Value;
-        //     }
-        //     return node;
-        // }
+            string dicKey = Marshal.PtrToStringUTF8(key);
+            Marshal.FreeHGlobal(key);
 
-        // public override void Remove(PlistNode node)
-        // {
-        //     plist_dict_get_item_key(node.GetPlist(), out IntPtr key);
-        //     plist_dict_remove_item(_node, key);
-
-        //     string dicKey = Marshal.PtrToStringUTF8(key);
-        //     Marshal.FreeHGlobal(key);
-
-        //     _map.Remove(dicKey);
-        // }
-
-        // public string GetNodeKey(PlistNode node)
-        // {
-        //     foreach (var item in _map)
-        //     {
-        //         if (item.Value == node)
-        //         {
-        //             return item.Key;
-        //         }
-        //     }
-        //     return string.Empty;
-        // }
+            _map.Remove(dicKey);
+        }
 
         private void dictionary_fill(plist_t node)
         {
-            plist_dict_new_iter(node, out plist_dict_iter it);
+            LibPlist.plist_dict_new_iter(node, out plist_dict_iter it);
 
-            plist_t subnode;
             while (true)
             {
-                subnode = (plist_t)IntPtr.Zero;
-                plist_dict_next_item(node, it, out IntPtr key, out subnode);
+                LibPlist.plist_dict_next_item(node, it, out IntPtr key, out plist_t subnode);
                 if (key == IntPtr.Zero || subnode == IntPtr.Zero)
                 {
                     break;
                 }
 
                 string dicKey = Marshal.PtrToStringUTF8(key);
-                _map[dicKey] = PlistNode.FromPlist(subnode, this)!;
+                _map[dicKey] = FromPlist(subnode, this)!;
 
                 Marshal.FreeHGlobal(key);
             }
