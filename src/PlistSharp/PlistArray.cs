@@ -24,7 +24,7 @@ namespace PlistSharp
         public PlistArray(PlistArray a)
             : base()
         {
-            _node = LibPlist.plist_copy(a.GetPlist());
+            _node = LibPlist.plist_copy(a._node);
             array_fill(_node);
         }
 
@@ -42,7 +42,7 @@ namespace PlistSharp
             {
                 PlistNode clone = value.Clone();
                 UpdateNodeParent(clone);
-                LibPlist.plist_array_insert_item(_node, clone.GetPlist(), (uint)index);
+                LibPlist.plist_array_insert_item(_node, clone._node, (uint)index);
                 _array[index] = clone;
             }
         }
@@ -58,7 +58,7 @@ namespace PlistSharp
         {
             PlistNode clone = item.Clone();
             UpdateNodeParent(clone);
-            LibPlist.plist_array_insert_item(_node, clone.GetPlist(), (uint)index);
+            LibPlist.plist_array_insert_item(_node, clone._node, (uint)index);
             _array.Insert(index, clone);
         }
 
@@ -74,7 +74,7 @@ namespace PlistSharp
         {
             PlistNode clone = item.Clone();
             UpdateNodeParent(clone);
-            LibPlist.plist_array_append_item(_node, clone.GetPlist());
+            LibPlist.plist_array_append_item(_node, clone._node);
             _array.Add(clone);
         }
 
@@ -97,15 +97,7 @@ namespace PlistSharp
         /// <inheritdoc />
         public void CopyTo(PlistNode[] array, int arrayIndex)
         {
-            PlistNode[] clones = new PlistNode[array.Length];
-            for (int i = 0; i < array.Length; i++)
-            {
-                PlistNode clone = array[i].Clone();
-                UpdateNodeParent(clone);
-                LibPlist.plist_array_insert_item(_node, clone.GetPlist(), (uint)(arrayIndex + i));
-                clones[i] = clone;
-            }
-            _array.CopyTo(clones, arrayIndex);
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -143,21 +135,22 @@ namespace PlistSharp
                     plist_t item = LibPlist.plist_array_get_item(node, i);
                     _array.Add(FromPlist(item, this)!);
                 }
-                return;
             }
-
-            LibPlist.plist_array_new_iter(node, out plist_array_iter iter);
-
-            while (true)
+            else
             {
-                LibPlist.plist_array_next_item(node, iter, out plist_t subnode);
-                if (subnode == IntPtr.Zero)
+                LibPlist.plist_array_new_iter(node, out plist_array_iter iter);
+
+                while (true)
                 {
-                    break;
+                    LibPlist.plist_array_next_item(node, iter, out plist_t subnode);
+                    if (subnode == IntPtr.Zero)
+                    {
+                        break;
+                    }
+                    _array.Add(FromPlist(subnode, this)!);
                 }
-                _array.Add(FromPlist(subnode, this)!);
+                Marshal.FreeHGlobal(iter);
             }
-            Marshal.FreeHGlobal(iter);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace PlistSharp
         public PlistDictionary(PlistDictionary d)
             : base()
         {
-            _node = LibPlist.plist_copy(d.GetPlist());
+            _node = LibPlist.plist_copy(d._node);
             dictionary_fill(_node);
         }
 
@@ -48,7 +48,7 @@ namespace PlistSharp
             {
                 PlistNode clone = value.Clone();
                 UpdateNodeParent(clone);
-                LibPlist.plist_dict_set_item(_node, key, clone.GetPlist());
+                LibPlist.plist_dict_set_item(_node, key, clone._node);
                 _map[key] = clone;
             }
         }
@@ -58,7 +58,7 @@ namespace PlistSharp
         {
             PlistNode clone = value.Clone();
             UpdateNodeParent(clone);
-            LibPlist.plist_dict_set_item(_node, key, clone.GetPlist());
+            LibPlist.plist_dict_set_item(_node, key, clone._node);
             _map.Add(key, clone);
         }
 
@@ -86,7 +86,7 @@ namespace PlistSharp
         {
             PlistNode clone = item.Value.Clone();
             UpdateNodeParent(clone);
-            LibPlist.plist_dict_set_item(_node, item.Key, clone.GetPlist());
+            LibPlist.plist_dict_set_item(_node, item.Key, clone._node);
             _map.Add(KeyValuePair.Create(item.Key, clone));
         }
 
@@ -114,7 +114,7 @@ namespace PlistSharp
             {
                 PlistNode clone = array[i].Value.Clone();
                 UpdateNodeParent(clone);
-                LibPlist.plist_dict_set_item(_node, array[i].Key, clone.GetPlist());
+                LibPlist.plist_dict_set_item(_node, array[i].Key, clone._node);
                 clones[i] = KeyValuePair.Create(array[i].Key, clone);
             }
             _map.CopyTo(clones, arrayIndex);
@@ -146,7 +146,7 @@ namespace PlistSharp
 
         public override void Remove(PlistNode node)
         {
-            LibPlist.plist_dict_get_item_key(node.GetPlist(), out IntPtr key);
+            LibPlist.plist_dict_get_item_key(node._node, out IntPtr key);
             LibPlist.plist_dict_remove_item(_node, key);
 
             string dicKey = Marshal.PtrToStringUTF8(key);
