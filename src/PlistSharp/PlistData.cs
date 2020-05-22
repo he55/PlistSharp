@@ -5,12 +5,12 @@ namespace PlistSharp
 {
     public class PlistData : PlistNode
     {
-        public PlistData(PlistNode? parent = null)
+        public PlistData(PlistStructure? parent = null)
             : base(plist_type.PLIST_DATA, parent)
         {
         }
 
-        public PlistData(plist_t node, PlistNode? parent = null)
+        public PlistData(plist_t node, PlistStructure? parent = null)
         {
             _node = node;
             _parent = parent;
@@ -21,8 +21,8 @@ namespace PlistSharp
         {
             byte[] b = d.GetValue();
             GCHandle gcHandle = GCHandle.Alloc(b, GCHandleType.Pinned);
-            IntPtr p = gcHandle.AddrOfPinnedObject();
 
+            IntPtr p = gcHandle.AddrOfPinnedObject();
             LibPlist.plist_set_data_val(_node, p, (ulong)b.Length);
             gcHandle.Free();
         }

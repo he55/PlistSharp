@@ -4,20 +4,14 @@ namespace PlistSharp
 {
     public class PlistNode : IDisposable
     {
-        internal PlistNode? _parent;
+        internal PlistStructure? _parent;
         internal plist_t _node;
 
         protected PlistNode()
         {
         }
 
-        protected PlistNode(plist_t node, PlistNode? parent = null)
-        {
-            _node = node;
-            _parent = parent;
-        }
-
-        protected PlistNode(plist_type type, PlistNode? parent = null)
+        protected PlistNode(plist_type type, PlistStructure? parent = null)
         {
             _parent = parent;
             _node = (plist_t)IntPtr.Zero;
@@ -75,7 +69,7 @@ namespace PlistSharp
             return LibPlist.plist_get_node_type(_node);
         }
 
-        public static PlistNode? FromPlist(plist_t node, PlistNode? parent = null)
+        public static PlistNode? FromPlist(plist_t node, PlistStructure? parent = null)
         {
             PlistNode? ret = null;
             if (node == IntPtr.Zero)

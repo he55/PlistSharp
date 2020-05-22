@@ -9,12 +9,12 @@ namespace PlistSharp
     {
         private readonly IList<PlistNode> _array = new List<PlistNode>();
 
-        public PlistArray(PlistNode? parent = null)
+        public PlistArray(PlistStructure? parent = null)
             : base(plist_type.PLIST_ARRAY, parent)
         {
         }
 
-        public PlistArray(plist_t node, PlistNode? parent = null)
+        public PlistArray(plist_t node, PlistStructure? parent = null)
         {
             _node = node;
             _parent = parent;

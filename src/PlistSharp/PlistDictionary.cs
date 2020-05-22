@@ -9,12 +9,12 @@ namespace PlistSharp
     {
         private readonly IDictionary<string, PlistNode> _map = new Dictionary<string, PlistNode>();
 
-        public PlistDictionary(PlistNode? parent = null)
+        public PlistDictionary(PlistStructure? parent = null)
             : base(plist_type.PLIST_DICT, parent)
         {
         }
 
-        public PlistDictionary(plist_t node, PlistNode? parent = null)
+        public PlistDictionary(plist_t node, PlistStructure? parent = null)
         {
             _node = node;
             _parent = parent;

@@ -2,12 +2,12 @@ namespace PlistSharp
 {
     public class PlistDate : PlistNode
     {
-        public PlistDate(PlistNode? parent = null)
+        public PlistDate(PlistStructure? parent = null)
             : base(plist_type.PLIST_DATE, parent)
         {
         }
 
-        public PlistDate(plist_t node, PlistNode? parent = null)
+        public PlistDate(plist_t node, PlistStructure? parent = null)
         {
             _node = node;
             _parent = parent;

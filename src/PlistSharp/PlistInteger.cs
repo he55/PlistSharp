@@ -2,12 +2,12 @@ namespace PlistSharp
 {
     public class PlistInteger : PlistNode
     {
-        public PlistInteger(PlistNode? parent = null)
+        public PlistInteger(PlistStructure? parent = null)
             : base(plist_type.PLIST_UINT, parent)
         {
         }
 
-        public PlistInteger(plist_t node, PlistNode? parent = null)
+        public PlistInteger(plist_t node, PlistStructure? parent = null)
         {
             _node = node;
             _parent = parent;

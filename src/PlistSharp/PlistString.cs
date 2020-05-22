@@ -5,12 +5,12 @@ namespace PlistSharp
 {
     public class PlistString : PlistNode
     {
-        public PlistString(PlistNode? parent = null)
+        public PlistString(PlistStructure? parent = null)
             : base(plist_type.PLIST_STRING, parent)
         {
         }
 
-        public PlistString(plist_t node, PlistNode? parent = null)
+        public PlistString(plist_t node, PlistStructure? parent = null)
         {
             _node = node;
             _parent = parent;

@@ -11,7 +11,7 @@ namespace PlistSharp
         {
         }
 
-        protected PlistStructure(plist_type type, PlistNode? parent = null)
+        protected PlistStructure(plist_type type, PlistStructure? parent = null)
             : base(type, parent)
         {
         }
@@ -60,14 +60,13 @@ namespace PlistSharp
         protected void UpdateNodeParent(PlistNode node)
         {
             //Unlink node first
-            PlistNode? parent = node._parent;
+            PlistStructure? parent = node._parent;
             if (parent != null)
             {
                 plist_type type = LibPlist.plist_get_node_type(parent._node);
                 if (type == plist_type.PLIST_ARRAY || type == plist_type.PLIST_DICT)
                 {
-                    PlistStructure s = (PlistStructure)parent;
-                    s.Remove(node);
+                    parent.Remove(node);
                 }
             }
             node._parent = this;
