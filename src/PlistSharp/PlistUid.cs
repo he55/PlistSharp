@@ -3,8 +3,8 @@ namespace PlistSharp
     public class PlistUid : PlistNode
     {
         public PlistUid(PlistStructure? parent = null)
-            : base(plist_type.PLIST_UID, parent)
         {
+            CreatePlistNode(plist_type.PLIST_UID, parent);
         }
 
         public PlistUid(plist_t node, PlistStructure? parent = null)
@@ -14,14 +14,14 @@ namespace PlistSharp
         }
 
         public PlistUid(PlistUid i)
-            : base(plist_type.PLIST_UID)
         {
+            CreatePlistNode(plist_type.PLIST_UID);
             LibPlist.plist_set_uid_val(_node, i.GetValue());
         }
 
         public PlistUid(ulong i)
-            : base(plist_type.PLIST_UID)
         {
+            CreatePlistNode(plist_type.PLIST_UID);
             LibPlist.plist_set_uid_val(_node, i);
         }
 

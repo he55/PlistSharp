@@ -6,8 +6,8 @@ namespace PlistSharp
     public class PlistKey : PlistNode
     {
         public PlistKey(PlistStructure? parent = null)
-            : base(plist_type.PLIST_KEY, parent)
         {
+            CreatePlistNode(plist_type.PLIST_KEY, parent);
         }
 
         public PlistKey(plist_t node, PlistStructure? parent = null)
@@ -17,14 +17,14 @@ namespace PlistSharp
         }
 
         public PlistKey(PlistKey k)
-            : base(plist_type.PLIST_KEY)
         {
+            CreatePlistNode(plist_type.PLIST_KEY);
             LibPlist.plist_set_key_val(_node, k.GetValue());
         }
 
         public PlistKey(string s)
-            : base(plist_type.PLIST_KEY)
         {
+            CreatePlistNode(plist_type.PLIST_KEY);
             LibPlist.plist_set_key_val(_node, s);
         }
 

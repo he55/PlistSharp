@@ -3,8 +3,8 @@ namespace PlistSharp
     public class PlistDate : PlistNode
     {
         public PlistDate(PlistStructure? parent = null)
-            : base(plist_type.PLIST_DATE, parent)
         {
+            CreatePlistNode(plist_type.PLIST_DATE, parent);
         }
 
         public PlistDate(plist_t node, PlistStructure? parent = null)
@@ -14,15 +14,15 @@ namespace PlistSharp
         }
 
         public PlistDate(PlistDate d)
-            : base(plist_type.PLIST_DATE)
         {
+            CreatePlistNode(plist_type.PLIST_DATE);
             timeval t = d.GetValue();
             LibPlist.plist_set_date_val(_node, (int)t.tv_sec, t.tv_usec);
         }
 
         public PlistDate(timeval t)
-            : base(plist_type.PLIST_DATE)
         {
+            CreatePlistNode(plist_type.PLIST_DATE);
             LibPlist.plist_set_date_val(_node, (int)t.tv_sec, t.tv_usec);
         }
 

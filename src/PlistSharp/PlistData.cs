@@ -6,8 +6,8 @@ namespace PlistSharp
     public class PlistData : PlistNode
     {
         public PlistData(PlistStructure? parent = null)
-            : base(plist_type.PLIST_DATA, parent)
         {
+            CreatePlistNode(plist_type.PLIST_DATA, parent);
         }
 
         public PlistData(plist_t node, PlistStructure? parent = null)
@@ -17,23 +17,27 @@ namespace PlistSharp
         }
 
         public PlistData(PlistData d)
-            : base(plist_type.PLIST_DATA)
         {
+            CreatePlistNode(plist_type.PLIST_DATA);
+
             byte[] b = d.GetValue();
             GCHandle gcHandle = GCHandle.Alloc(b, GCHandleType.Pinned);
 
             IntPtr p = gcHandle.AddrOfPinnedObject();
             LibPlist.plist_set_data_val(_node, p, (ulong)b.Length);
+
             gcHandle.Free();
         }
 
         public PlistData(byte[] buff)
-            : base(plist_type.PLIST_DATA)
         {
+            CreatePlistNode(plist_type.PLIST_DATA);
+
             GCHandle gcHandle = GCHandle.Alloc(buff, GCHandleType.Pinned);
             IntPtr p = gcHandle.AddrOfPinnedObject();
 
             LibPlist.plist_set_data_val(_node, p, (ulong)buff.Length);
+
             gcHandle.Free();
         }
 
@@ -45,9 +49,10 @@ namespace PlistSharp
         public void SetValue(byte[] buff)
         {
             GCHandle gcHandle = GCHandle.Alloc(buff, GCHandleType.Pinned);
-            IntPtr p = gcHandle.AddrOfPinnedObject();
 
+            IntPtr p = gcHandle.AddrOfPinnedObject();
             LibPlist.plist_set_data_val(_node, p, (ulong)buff.Length);
+
             gcHandle.Free();
         }
 
@@ -58,6 +63,7 @@ namespace PlistSharp
             byte[] ret = new byte[length];
             Marshal.Copy(buff, ret, 0, (int)length);
             Marshal.FreeHGlobal(buff);
+
             return ret;
         }
     }

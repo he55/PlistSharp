@@ -10,8 +10,8 @@ namespace PlistSharp
         private readonly IList<PlistNode> _array = new List<PlistNode>();
 
         public PlistArray(PlistStructure? parent = null)
-            : base(plist_type.PLIST_ARRAY, parent)
         {
+            CreatePlistNode(plist_type.PLIST_ARRAY, parent);
         }
 
         public PlistArray(plist_t node, PlistStructure? parent = null)

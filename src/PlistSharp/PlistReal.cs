@@ -3,8 +3,8 @@ namespace PlistSharp
     public class PlistReal : PlistNode
     {
         public PlistReal(PlistStructure? parent = null)
-            : base(plist_type.PLIST_REAL, parent)
         {
+            CreatePlistNode(plist_type.PLIST_REAL, parent);
         }
 
         public PlistReal(plist_t node, PlistStructure? parent = null)
@@ -14,14 +14,14 @@ namespace PlistSharp
         }
 
         public PlistReal(PlistReal d)
-            : base(plist_type.PLIST_REAL)
         {
+            CreatePlistNode(plist_type.PLIST_REAL);
             LibPlist.plist_set_real_val(_node, d.GetValue());
         }
 
         public PlistReal(double d)
-            : base(plist_type.PLIST_REAL)
         {
+            CreatePlistNode(plist_type.PLIST_REAL);
             LibPlist.plist_set_real_val(_node, d);
         }
 

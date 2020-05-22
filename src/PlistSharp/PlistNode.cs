@@ -11,7 +11,7 @@ namespace PlistSharp
         {
         }
 
-        protected PlistNode(plist_type type, PlistStructure? parent = null)
+        public void CreatePlistNode(plist_type type, PlistStructure? parent = null)
         {
             _parent = parent;
             _node = (plist_t)IntPtr.Zero;

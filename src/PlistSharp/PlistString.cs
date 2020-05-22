@@ -6,8 +6,8 @@ namespace PlistSharp
     public class PlistString : PlistNode
     {
         public PlistString(PlistStructure? parent = null)
-            : base(plist_type.PLIST_STRING, parent)
         {
+            CreatePlistNode(plist_type.PLIST_STRING, parent);
         }
 
         public PlistString(plist_t node, PlistStructure? parent = null)
@@ -17,14 +17,14 @@ namespace PlistSharp
         }
 
         public PlistString(PlistString s)
-            : base(plist_type.PLIST_STRING)
         {
+            CreatePlistNode(plist_type.PLIST_STRING);
             LibPlist.plist_set_string_val(_node, s.GetValue());
         }
 
         public PlistString(string s)
-            : base(plist_type.PLIST_STRING)
         {
+            CreatePlistNode(plist_type.PLIST_STRING);
             LibPlist.plist_set_string_val(_node, s);
         }
 

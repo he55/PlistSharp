@@ -7,15 +7,6 @@ namespace PlistSharp
 {
     public class PlistStructure : PlistNode
     {
-        protected PlistStructure()
-        {
-        }
-
-        protected PlistStructure(plist_type type, PlistStructure? parent = null)
-            : base(type, parent)
-        {
-        }
-
         public bool IsBinary { get; private set; }
 
         public uint GetSize()

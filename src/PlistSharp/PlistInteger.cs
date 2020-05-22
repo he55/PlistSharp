@@ -3,8 +3,8 @@ namespace PlistSharp
     public class PlistInteger : PlistNode
     {
         public PlistInteger(PlistStructure? parent = null)
-            : base(plist_type.PLIST_UINT, parent)
         {
+            CreatePlistNode(plist_type.PLIST_UINT, parent);
         }
 
         public PlistInteger(plist_t node, PlistStructure? parent = null)
@@ -14,14 +14,14 @@ namespace PlistSharp
         }
 
         public PlistInteger(PlistInteger i)
-            : base(plist_type.PLIST_UINT)
         {
+            CreatePlistNode(plist_type.PLIST_UINT);
             LibPlist.plist_set_uint_val(_node, i.GetValue());
         }
 
         public PlistInteger(ulong i)
-            : base(plist_type.PLIST_UINT)
         {
+            CreatePlistNode(plist_type.PLIST_UINT);
             LibPlist.plist_set_uint_val(_node, i);
         }
 

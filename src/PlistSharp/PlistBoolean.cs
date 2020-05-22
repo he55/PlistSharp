@@ -3,8 +3,8 @@ namespace PlistSharp
     public class PlistBoolean : PlistNode
     {
         public PlistBoolean(PlistStructure? parent = null)
-            : base(plist_type.PLIST_BOOLEAN, parent)
         {
+            CreatePlistNode(plist_type.PLIST_BOOLEAN, parent);
         }
 
         public PlistBoolean(plist_t node, PlistStructure? parent = null)
@@ -14,14 +14,14 @@ namespace PlistSharp
         }
 
         public PlistBoolean(PlistBoolean b)
-            : base(plist_type.PLIST_BOOLEAN)
         {
+            CreatePlistNode(plist_type.PLIST_BOOLEAN);
             LibPlist.plist_set_bool_val(_node, b.GetValue() ? (byte)1 : (byte)0);
         }
 
         public PlistBoolean(bool b)
-            : base(plist_type.PLIST_BOOLEAN)
         {
+            CreatePlistNode(plist_type.PLIST_BOOLEAN);
             LibPlist.plist_set_bool_val(_node, b ? (byte)1 : (byte)0);
         }
 
