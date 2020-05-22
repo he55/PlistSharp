@@ -8,8 +8,9 @@ namespace PlistSharp
         }
 
         public PlistInteger(plist_t node, PlistNode? parent = null)
-            : base(node, parent)
         {
+            _node = node;
+            _parent = parent;
         }
 
         public PlistInteger(PlistInteger i)

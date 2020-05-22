@@ -7,9 +7,8 @@ namespace PlistSharp
         internal PlistNode? _parent;
         internal plist_t _node;
 
-        protected PlistNode(PlistNode? parent = null)
+        protected PlistNode()
         {
-            _parent = parent;
         }
 
         protected PlistNode(plist_t node, PlistNode? parent = null)
@@ -74,16 +73,6 @@ namespace PlistSharp
                 return plist_type.PLIST_NONE;
             }
             return LibPlist.plist_get_node_type(_node);
-        }
-
-        public plist_t GetPlist()
-        {
-            return _node;
-        }
-
-        public PlistNode? GetParent()
-        {
-            return _parent;
         }
 
         public static PlistNode? FromPlist(plist_t node, PlistNode? parent = null)

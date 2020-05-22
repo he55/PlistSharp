@@ -8,8 +8,9 @@ namespace PlistSharp
         }
 
         public PlistBoolean(plist_t node, PlistNode? parent = null)
-            : base(node, parent)
         {
+            _node = node;
+            _parent = parent;
         }
 
         public PlistBoolean(PlistBoolean b)

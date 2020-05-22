@@ -8,8 +8,9 @@ namespace PlistSharp
         }
 
         public PlistDate(plist_t node, PlistNode? parent = null)
-            : base(node, parent)
         {
+            _node = node;
+            _parent = parent;
         }
 
         public PlistDate(PlistDate d)

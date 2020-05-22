@@ -15,14 +15,13 @@ namespace PlistSharp
         }
 
         public PlistArray(plist_t node, PlistNode? parent = null)
-            : base(parent)
         {
             _node = node;
+            _parent = parent;
             array_fill(_node);
         }
 
         public PlistArray(PlistArray a)
-            : base()
         {
             _node = LibPlist.plist_copy(a._node);
             array_fill(_node);

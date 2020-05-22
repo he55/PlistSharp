@@ -15,14 +15,13 @@ namespace PlistSharp
         }
 
         public PlistDictionary(plist_t node, PlistNode? parent = null)
-            : base(parent)
         {
             _node = node;
+            _parent = parent;
             dictionary_fill(_node);
         }
 
         public PlistDictionary(PlistDictionary d)
-            : base()
         {
             _node = LibPlist.plist_copy(d._node);
             dictionary_fill(_node);

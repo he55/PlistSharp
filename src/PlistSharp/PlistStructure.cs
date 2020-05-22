@@ -7,8 +7,7 @@ namespace PlistSharp
 {
     public class PlistStructure : PlistNode
     {
-        protected PlistStructure(PlistNode? parent = null)
-            : base(parent)
+        protected PlistStructure()
         {
         }
 

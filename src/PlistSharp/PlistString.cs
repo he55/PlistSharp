@@ -11,8 +11,9 @@ namespace PlistSharp
         }
 
         public PlistString(plist_t node, PlistNode? parent = null)
-            : base(node, parent)
         {
+            _node = node;
+            _parent = parent;
         }
 
         public PlistString(PlistString s)
