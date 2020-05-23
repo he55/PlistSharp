@@ -11,26 +11,25 @@ namespace PlistSharp
 
         public uint GetSize()
         {
-            uint size = 0;
             plist_type type = LibPlist.plist_get_node_type(_node);
-            if (type == plist_type.PLIST_ARRAY)
+            switch (type)
             {
-                size = LibPlist.plist_array_get_size(_node);
+                case plist_type.PLIST_ARRAY:
+                    return LibPlist.plist_array_get_size(_node);
+                case plist_type.PLIST_DICT:
+                    return LibPlist.plist_dict_get_size(_node);
+                default:
+                    return 0;
             }
-            else if (type == plist_type.PLIST_DICT)
-            {
-                size = LibPlist.plist_dict_get_size(_node);
-            }
-            return size;
         }
 
         public string ToXml()
         {
-            LibPlist.plist_to_xml(_node, out IntPtr xml, out uint length);
+            LibPlist.plist_to_xml(_node, out IntPtr ptr, out uint length);
+            string xml = Marshal.PtrToStringUTF8(ptr, (int)length);
+            Marshal.FreeHGlobal(ptr);
 
-            string ret = Marshal.PtrToStringUTF8(xml, (int)length);
-            Marshal.FreeHGlobal(xml);
-            return ret;
+            return xml;
         }
 
         public byte[] ToBin()

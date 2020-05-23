@@ -16,39 +16,32 @@ namespace PlistSharp
             _parent = parent;
         }
 
-        public PlistString(PlistString s)
+        public PlistString(string value)
         {
             CreatePlistNode(plist_type.PLIST_STRING);
-            LibPlist.plist_set_string_val(_node, s.GetValue());
-        }
-
-        public PlistString(string s)
-        {
-            CreatePlistNode(plist_type.PLIST_STRING);
-            LibPlist.plist_set_string_val(_node, s);
+            LibPlist.plist_set_string_val(_node, value);
         }
 
         public override PlistNode Clone()
         {
-            return new PlistString(this);
+            PlistString plistString = new PlistString();
+            LibPlist.plist_set_string_val(plistString._node, GetValue());
+
+            return plistString;
         }
 
-        public void SetValue(string s)
+        public void SetValue(string value)
         {
-            LibPlist.plist_set_string_val(_node, s);
+            LibPlist.plist_set_string_val(_node, value);
         }
 
         public string GetValue()
         {
-            LibPlist.plist_get_string_val(_node, out IntPtr s);
-            if (s == IntPtr.Zero)
-            {
-                return string.Empty;
-            }
+            LibPlist.plist_get_string_val(_node, out IntPtr ptr);
+            string value = Marshal.PtrToStringUTF8(ptr);
+            Marshal.FreeHGlobal(ptr);
 
-            string ret = Marshal.PtrToStringUTF8(s);
-            Marshal.FreeHGlobal(s);
-            return ret;
+            return value;
         }
     }
 }

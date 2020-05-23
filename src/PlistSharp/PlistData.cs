@@ -16,55 +16,49 @@ namespace PlistSharp
             _parent = parent;
         }
 
-        public PlistData(PlistData d)
+        public PlistData(byte[] buffer)
         {
             CreatePlistNode(plist_type.PLIST_DATA);
 
-            byte[] b = d.GetValue();
-            GCHandle gcHandle = GCHandle.Alloc(b, GCHandleType.Pinned);
+            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            IntPtr ptr = handle.AddrOfPinnedObject();
+            LibPlist.plist_set_data_val(_node, ptr, (ulong)buffer.Length);
 
-            IntPtr p = gcHandle.AddrOfPinnedObject();
-            LibPlist.plist_set_data_val(_node, p, (ulong)b.Length);
-
-            gcHandle.Free();
-        }
-
-        public PlistData(byte[] buff)
-        {
-            CreatePlistNode(plist_type.PLIST_DATA);
-
-            GCHandle gcHandle = GCHandle.Alloc(buff, GCHandleType.Pinned);
-            IntPtr p = gcHandle.AddrOfPinnedObject();
-
-            LibPlist.plist_set_data_val(_node, p, (ulong)buff.Length);
-
-            gcHandle.Free();
+            handle.Free();
         }
 
         public override PlistNode Clone()
         {
-            return new PlistData(this);
+            PlistData plistData = new PlistData();
+
+            byte[] buffer = GetValue();
+            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+
+            IntPtr ptr = handle.AddrOfPinnedObject();
+            LibPlist.plist_set_data_val(plistData._node, ptr, (ulong)buffer.Length);
+            handle.Free();
+
+            return plistData;
         }
 
-        public void SetValue(byte[] buff)
+        public void SetValue(byte[] buffer)
         {
-            GCHandle gcHandle = GCHandle.Alloc(buff, GCHandleType.Pinned);
+            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            IntPtr ptr = handle.AddrOfPinnedObject();
+            LibPlist.plist_set_data_val(_node, ptr, (ulong)buffer.Length);
 
-            IntPtr p = gcHandle.AddrOfPinnedObject();
-            LibPlist.plist_set_data_val(_node, p, (ulong)buff.Length);
-
-            gcHandle.Free();
+            handle.Free();
         }
 
         public byte[] GetValue()
         {
-            LibPlist.plist_get_data_val(_node, out IntPtr buff, out ulong length);
+            LibPlist.plist_get_data_val(_node, out IntPtr ptr, out ulong length);
 
-            byte[] ret = new byte[length];
-            Marshal.Copy(buff, ret, 0, (int)length);
-            Marshal.FreeHGlobal(buff);
+            byte[] buffer = new byte[length];
+            Marshal.Copy(ptr, buffer, 0, (int)length);
+            Marshal.FreeHGlobal(ptr);
 
-            return ret;
+            return buffer;
         }
     }
 }

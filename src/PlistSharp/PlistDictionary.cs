@@ -21,12 +21,6 @@ namespace PlistSharp
             dictionary_fill(_node);
         }
 
-        public PlistDictionary(PlistDictionary d)
-        {
-            _node = LibPlist.plist_copy(d._node);
-            dictionary_fill(_node);
-        }
-
         /// <inheritdoc />
         public ICollection<string> Keys => _map.Keys;
 
@@ -140,6 +134,10 @@ namespace PlistSharp
 
         public override PlistNode Clone()
         {
+            PlistDictionary plistDictionaries = new PlistDictionary();
+            plistDictionaries._node = LibPlist.plist_copy(_node);
+            plistDictionaries.dictionary_fill(plistDictionaries._node);
+
             return new PlistDictionary(this);
         }
 

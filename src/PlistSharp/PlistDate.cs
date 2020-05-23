@@ -13,13 +13,6 @@ namespace PlistSharp
             _parent = parent;
         }
 
-        public PlistDate(PlistDate d)
-        {
-            CreatePlistNode(plist_type.PLIST_DATE);
-            timeval t = d.GetValue();
-            LibPlist.plist_set_date_val(_node, (int)t.tv_sec, t.tv_usec);
-        }
-
         public PlistDate(timeval t)
         {
             CreatePlistNode(plist_type.PLIST_DATE);
@@ -28,7 +21,11 @@ namespace PlistSharp
 
         public override PlistNode Clone()
         {
-            return new PlistDate(this);
+            PlistDate plistDate = new PlistDate();
+            timeval t = GetValue();
+            LibPlist.plist_set_date_val(plistDate._node, (int)t.tv_sec, t.tv_usec);
+
+            return plistDate;
         }
 
         public void SetValue(timeval t)

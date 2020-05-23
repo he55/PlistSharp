@@ -13,32 +13,29 @@ namespace PlistSharp
             _parent = parent;
         }
 
-        public PlistReal(PlistReal d)
+        public PlistReal(double value)
         {
             CreatePlistNode(plist_type.PLIST_REAL);
-            LibPlist.plist_set_real_val(_node, d.GetValue());
-        }
-
-        public PlistReal(double d)
-        {
-            CreatePlistNode(plist_type.PLIST_REAL);
-            LibPlist.plist_set_real_val(_node, d);
+            LibPlist.plist_set_real_val(_node, value);
         }
 
         public override PlistNode Clone()
         {
-            return new PlistReal(this);
+            PlistReal plistReal = new PlistReal();
+            LibPlist.plist_set_real_val(plistReal._node, GetValue());
+
+            return plistReal;
         }
 
-        public void SetValue(double d)
+        public void SetValue(double value)
         {
-            LibPlist.plist_set_real_val(_node, d);
+            LibPlist.plist_set_real_val(_node, value);
         }
 
         public double GetValue()
         {
-            LibPlist.plist_get_real_val(_node, out double d);
-            return d;
+            LibPlist.plist_get_real_val(_node, out double value);
+            return value;
         }
     }
 }

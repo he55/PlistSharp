@@ -7,10 +7,6 @@ namespace PlistSharp
         internal PlistStructure? _parent;
         internal plist_t _node;
 
-        protected PlistNode()
-        {
-        }
-
         public void CreatePlistNode(plist_type type, PlistStructure? parent = null)
         {
             _parent = parent;
@@ -50,7 +46,6 @@ namespace PlistSharp
                     _node = LibPlist.plist_new_dict();
                     break;
                 case plist_type.PLIST_NONE:
-                default:
                     break;
             }
         }

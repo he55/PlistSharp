@@ -21,12 +21,6 @@ namespace PlistSharp
             array_fill(_node);
         }
 
-        public PlistArray(PlistArray a)
-        {
-            _node = LibPlist.plist_copy(a._node);
-            array_fill(_node);
-        }
-
         /// <inheritdoc />
         public int Count => _array.Count;
 
@@ -121,7 +115,11 @@ namespace PlistSharp
 
         public override PlistNode Clone()
         {
-            return new PlistArray(this);
+            PlistArray plistArrays = new PlistArray();
+            plistArrays._node = LibPlist.plist_copy(_node);
+            plistArrays.array_fill(plistArrays._node);
+
+            return plistArrays;
         }
 
         private void array_fill(plist_t node)

@@ -13,32 +13,29 @@ namespace PlistSharp
             _parent = parent;
         }
 
-        public PlistInteger(PlistInteger i)
+        public PlistInteger(ulong value)
         {
             CreatePlistNode(plist_type.PLIST_UINT);
-            LibPlist.plist_set_uint_val(_node, i.GetValue());
-        }
-
-        public PlistInteger(ulong i)
-        {
-            CreatePlistNode(plist_type.PLIST_UINT);
-            LibPlist.plist_set_uint_val(_node, i);
+            LibPlist.plist_set_uint_val(_node, value);
         }
 
         public override PlistNode Clone()
         {
-            return new PlistInteger(this);
+            PlistInteger plistInteger = new PlistInteger();
+            LibPlist.plist_set_uint_val(plistInteger._node, GetValue());
+
+            return plistInteger;
         }
 
-        public void SetValue(ulong i)
+        public void SetValue(ulong value)
         {
-            LibPlist.plist_set_uint_val(_node, i);
+            LibPlist.plist_set_uint_val(_node, value);
         }
 
         public ulong GetValue()
         {
-            LibPlist.plist_get_uint_val(_node, out ulong i);
-            return i;
+            LibPlist.plist_get_uint_val(_node, out ulong value);
+            return value;
         }
     }
 }
