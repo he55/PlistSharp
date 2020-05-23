@@ -47,21 +47,6 @@ namespace PlistSharp
             throw new NotImplementedException();
         }
 
-        protected void UpdateNodeParent(PlistNode node)
-        {
-            //Unlink node first
-            PlistStructure? parent = node._parent;
-            if (parent != null)
-            {
-                plist_type type = LibPlist.plist_get_node_type(parent._node);
-                if (type == plist_type.PLIST_ARRAY || type == plist_type.PLIST_DICT)
-                {
-                    parent.Remove(node);
-                }
-            }
-            node._parent = this;
-        }
-
         private static PlistStructure? ImportStruct(plist_t root)
         {
             PlistStructure? ret = null;

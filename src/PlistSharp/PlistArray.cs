@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace PlistSharp
 {
-    public class PlistArray : PlistStructure, IList<PlistNode>
+    public class PlistArray : PlistStructure, IEnumerable<PlistNode>
     {
         private readonly IList<PlistNode> _array = new List<PlistNode>();
 
@@ -21,57 +21,47 @@ namespace PlistSharp
             array_fill(_node);
         }
 
-        /// <inheritdoc />
         public int Count => _array.Count;
 
-        /// <inheritdoc />
-        public bool IsReadOnly => false;
-
-        /// <inheritdoc />
         public PlistNode this[int index]
         {
             get => _array[index];
             set
             {
                 PlistNode clone = value.Clone();
-                UpdateNodeParent(clone);
+                clone._parent = this;
                 LibPlist.plist_array_insert_item(_node, clone._node, (uint)index);
                 _array[index] = clone;
             }
         }
 
-        /// <inheritdoc />
         public int IndexOf(PlistNode item)
         {
             return _array.IndexOf(item);
         }
 
-        /// <inheritdoc />
         public void Insert(int index, PlistNode item)
         {
             PlistNode clone = item.Clone();
-            UpdateNodeParent(clone);
+            clone._parent = this;
             LibPlist.plist_array_insert_item(_node, clone._node, (uint)index);
             _array.Insert(index, clone);
         }
 
-        /// <inheritdoc />
         public void RemoveAt(int index)
         {
             LibPlist.plist_array_remove_item(_node, (uint)index);
             _array.RemoveAt(index);
         }
 
-        /// <inheritdoc />
         public void Add(PlistNode item)
         {
             PlistNode clone = item.Clone();
-            UpdateNodeParent(clone);
+            clone._parent = this;
             LibPlist.plist_array_append_item(_node, clone._node);
             _array.Add(clone);
         }
 
-        /// <inheritdoc />
         public void Clear()
         {
             for (int i = 0; i < _array.Count; i++)
@@ -79,26 +69,6 @@ namespace PlistSharp
                 LibPlist.plist_array_remove_item(_node, 0);
             }
             _array.Clear();
-        }
-
-        /// <inheritdoc />
-        public bool Contains(PlistNode item)
-        {
-            return _array.Contains(item);
-        }
-
-        /// <inheritdoc />
-        public void CopyTo(PlistNode[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        bool ICollection<PlistNode>.Remove(PlistNode item)
-        {
-            int index = _array.IndexOf(item);
-            LibPlist.plist_array_remove_item(_node, (uint)index);
-            return _array.Remove(item);
         }
 
         /// <inheritdoc />
