@@ -13,98 +13,91 @@ namespace PlistSharp
         {
             plist_type.PLIST_ARRAY => LibPlist.plist_array_get_size(_node),
             plist_type.PLIST_DICT => LibPlist.plist_dict_get_size(_node),
-            _ => throw new NotImplementedException()
+            _ => throw new NotSupportedException()
         };
 
-        public string ToXml()
+        public string ToPlistXml()
         {
             LibPlist.plist_to_xml(_node, out IntPtr ptr, out uint length);
             string xml = Marshal.PtrToStringUTF8(ptr, (int)length);
+
             Marshal.FreeHGlobal(ptr);
 
             return xml;
         }
 
-        public byte[] ToBin()
+        public byte[] ToPlistBin()
         {
-            LibPlist.plist_to_bin(_node, out IntPtr bin, out uint length);
+            LibPlist.plist_to_bin(_node, out IntPtr ptr, out uint length);
+            byte[] buffer = new byte[length];
 
-            byte[] ret = new byte[length];
-            Marshal.Copy(bin, ret, 0, (int)length);
-            Marshal.FreeHGlobal(bin);
-            return ret;
+            Marshal.Copy(ptr, buffer, 0, (int)length);
+            Marshal.FreeHGlobal(ptr);
+
+            return buffer;
         }
 
-        private static PlistStructure? ImportStruct(plist_t root)
+        public static PlistStructure FromPlistXml(string xml)
         {
-            PlistStructure? ret = null;
-            plist_type type = LibPlist.plist_get_node_type(root);
+            int length = Encoding.UTF8.GetByteCount(xml);
+            LibPlist.plist_from_xml(xml, (uint)length, out plist_t root);
 
-            if (type == plist_type.PLIST_ARRAY || type == plist_type.PLIST_DICT)
-            {
-                ret = (PlistStructure?)FromPlist(root);
-            }
-            else
-            {
-                LibPlist.plist_free(root);
-            }
-            return ret;
-        }
-
-        public static PlistStructure? FromXml(string xml)
-        {
-            uint length = (uint)Encoding.UTF8.GetByteCount(xml);
-            LibPlist.plist_from_xml(xml, length, out plist_t root);
             return ImportStruct(root);
         }
 
-        private static PlistStructure? FromBin(byte[] bin)
+        private static unsafe PlistStructure FromPlistBin(ReadOnlySpan<byte> bin)
         {
             uint length = (uint)bin.Length;
 
-            GCHandle pinned = GCHandle.Alloc(bin, GCHandleType.Pinned);
-            IntPtr data = pinned.AddrOfPinnedObject();
-
-            LibPlist.plist_from_bin(data, length, out plist_t root);
-            PlistStructure? structure = ImportStruct(root);
-            if (structure != null)
+            fixed (byte* p = bin)
             {
-                structure.IsBinary = LibPlist.plist_is_binary(data, length) != 0;
-            }
-            pinned.Free();
+                LibPlist.plist_from_bin((IntPtr)p, length, out plist_t root);
+                PlistStructure structure = ImportStruct(root);
+                structure.IsBinary = LibPlist.plist_is_binary((IntPtr)p, length) != 0;
 
-            return structure;
+                return structure;
+            }
         }
 
-        public static PlistStructure? FromFile(string path)
+        public static PlistStructure FromFile(string path)
         {
             using FileStream fileStream = new FileStream(path, FileMode.Open);
             return FromFile(fileStream);
         }
 
-        public static PlistStructure? FromFile(Stream stream)
+        public static PlistStructure FromFile(Stream stream)
         {
             using MemoryStream memoryStream = new MemoryStream();
             stream.CopyTo(memoryStream);
 
-            byte[] bin = memoryStream.ToArray();
-            return FromFile(bin);
+            return FromFile(memoryStream.ToArray());
         }
 
-        public static unsafe PlistStructure? FromFile(ReadOnlySpan<byte> buffer)
+        public static unsafe PlistStructure FromFile(ReadOnlySpan<byte> buffer)
         {
             uint length = (uint)buffer.Length;
 
             fixed (byte* p = buffer)
             {
                 LibPlist.plist_from_memory(p, length, out plist_t root);
-                PlistStructure? structure = ImportStruct(root);
-                if (structure != null)
-                {
-                    structure.IsBinary = LibPlist.plist_is_binary(p, length) != 0;
-                }
+                PlistStructure structure = ImportStruct(root);
+                structure.IsBinary = LibPlist.plist_is_binary(p, length) != 0;
 
                 return structure;
+            }
+        }
+
+        private static PlistStructure ImportStruct(plist_t root)
+        {
+            plist_type type = LibPlist.plist_get_node_type(root);
+
+            switch (type)
+            {
+                case plist_type.PLIST_ARRAY:
+                case plist_type.PLIST_DICT:
+                    return (PlistStructure)FromPlist(root)!;
+                default:
+                    throw new NotSupportedException();
             }
         }
     }
