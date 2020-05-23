@@ -99,18 +99,9 @@ namespace PlistSharp
             return _map.Contains(item);
         }
 
-        /// <inheritdoc />
         public void CopyTo(KeyValuePair<string, PlistNode>[] array, int arrayIndex)
         {
-            KeyValuePair<string, PlistNode>[] clones = new KeyValuePair<string, PlistNode>[array.Length];
-            for (int i = 0; i < array.Length; i++)
-            {
-                PlistNode clone = array[i].Value.Clone();
-                UpdateNodeParent(clone);
-                LibPlist.plist_dict_set_item(_node, array[i].Key, clone._node);
-                clones[i] = KeyValuePair.Create(array[i].Key, clone);
-            }
-            _map.CopyTo(clones, arrayIndex);
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -134,20 +125,20 @@ namespace PlistSharp
 
         public override PlistNode Clone()
         {
-            PlistDictionary plistDictionaries = new PlistDictionary();
-            plistDictionaries._node = LibPlist.plist_copy(_node);
-            plistDictionaries.dictionary_fill(plistDictionaries._node);
+            PlistDictionary plistDictionary = new PlistDictionary();
+            plistDictionary._node = LibPlist.plist_copy(_node);
+            plistDictionary.dictionary_fill(plistDictionary._node);
 
-            return new PlistDictionary(this);
+            return plistDictionary;
         }
 
         public override void Remove(PlistNode node)
         {
-            LibPlist.plist_dict_get_item_key(node._node, out IntPtr key);
-            LibPlist.plist_dict_remove_item(_node, key);
+            LibPlist.plist_dict_get_item_key(node._node, out IntPtr ptr);
+            LibPlist.plist_dict_remove_item(_node, ptr);
 
-            string dicKey = Marshal.PtrToStringUTF8(key);
-            Marshal.FreeHGlobal(key);
+            string dicKey = Marshal.PtrToStringUTF8(ptr);
+            Marshal.FreeHGlobal(ptr);
 
             _map.Remove(dicKey);
         }

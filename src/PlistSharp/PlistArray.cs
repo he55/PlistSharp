@@ -115,11 +115,11 @@ namespace PlistSharp
 
         public override PlistNode Clone()
         {
-            PlistArray plistArrays = new PlistArray();
-            plistArrays._node = LibPlist.plist_copy(_node);
-            plistArrays.array_fill(plistArrays._node);
+            PlistArray plistArray = new PlistArray();
+            plistArray._node = LibPlist.plist_copy(_node);
+            plistArray.array_fill(plistArray._node);
 
-            return plistArrays;
+            return plistArray;
         }
 
         private void array_fill(plist_t node)
