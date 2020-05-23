@@ -5,9 +5,15 @@ namespace PlistSharp
 {
     public class PlistData : PlistNode
     {
-        public PlistData(PlistStructure? parent = null)
+        public PlistData(byte[] buffer, PlistStructure? parent = null)
         {
-            CreatePlistNode(plist_type.PLIST_DATA, parent);
+            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            IntPtr ptr = handle.AddrOfPinnedObject();
+
+            _node = LibPlist.plist_new_data(ptr, (ulong)buffer.Length);
+            _parent = parent;
+
+            handle.Free();
         }
 
         public PlistData(plist_t node, PlistStructure? parent = null)
@@ -16,49 +22,30 @@ namespace PlistSharp
             _parent = parent;
         }
 
-        public PlistData(byte[] buffer)
+        public override PlistNode Copy() => new PlistData(Value);
+
+        public byte[] Value
         {
-            CreatePlistNode(plist_type.PLIST_DATA);
+            get
+            {
+                LibPlist.plist_get_data_val(_node, out IntPtr ptr, out ulong length);
+                byte[] buffer = new byte[length];
 
-            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            IntPtr ptr = handle.AddrOfPinnedObject();
-            LibPlist.plist_set_data_val(_node, ptr, (ulong)buffer.Length);
+                Marshal.Copy(ptr, buffer, 0, (int)length);
+                Marshal.FreeHGlobal(ptr);
 
-            handle.Free();
-        }
+                return buffer;
+            }
 
-        public override PlistNode Copy()
-        {
-            PlistData plistData = new PlistData();
+            set
+            {
+                GCHandle handle = GCHandle.Alloc(value, GCHandleType.Pinned);
 
-            byte[] buffer = GetValue();
-            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                IntPtr ptr = handle.AddrOfPinnedObject();
+                LibPlist.plist_set_data_val(_node, ptr, (ulong)value.Length);
 
-            IntPtr ptr = handle.AddrOfPinnedObject();
-            LibPlist.plist_set_data_val(plistData._node, ptr, (ulong)buffer.Length);
-            handle.Free();
-
-            return plistData;
-        }
-
-        public void SetValue(byte[] buffer)
-        {
-            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            IntPtr ptr = handle.AddrOfPinnedObject();
-            LibPlist.plist_set_data_val(_node, ptr, (ulong)buffer.Length);
-
-            handle.Free();
-        }
-
-        public byte[] GetValue()
-        {
-            LibPlist.plist_get_data_val(_node, out IntPtr ptr, out ulong length);
-
-            byte[] buffer = new byte[length];
-            Marshal.Copy(ptr, buffer, 0, (int)length);
-            Marshal.FreeHGlobal(ptr);
-
-            return buffer;
+                handle.Free();
+            }
         }
     }
 }

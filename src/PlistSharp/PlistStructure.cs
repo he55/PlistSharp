@@ -9,20 +9,12 @@ namespace PlistSharp
     {
         public bool IsBinary { get; private set; }
 
-        public abstract void Remove(PlistNode node);
-
-        public uint GetSize()
+        public uint Size => PlistType switch
         {
-            switch (LibPlist.plist_get_node_type(_node))
-            {
-                case plist_type.PLIST_ARRAY:
-                    return LibPlist.plist_array_get_size(_node);
-                case plist_type.PLIST_DICT:
-                    return LibPlist.plist_dict_get_size(_node);
-                default:
-                    return 0;
-            }
-        }
+            plist_type.PLIST_ARRAY => LibPlist.plist_array_get_size(_node),
+            plist_type.PLIST_DICT => LibPlist.plist_dict_get_size(_node),
+            _ => throw new NotImplementedException()
+        };
 
         public string ToXml()
         {

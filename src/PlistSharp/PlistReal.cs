@@ -2,9 +2,10 @@ namespace PlistSharp
 {
     public class PlistReal : PlistNode
     {
-        public PlistReal(PlistStructure? parent = null)
+        public PlistReal(double value, PlistStructure? parent = null)
         {
-            CreatePlistNode(plist_type.PLIST_REAL, parent);
+            _node = LibPlist.plist_new_real(value);
+            _parent = parent;
         }
 
         public PlistReal(plist_t node, PlistStructure? parent = null)
@@ -13,29 +14,17 @@ namespace PlistSharp
             _parent = parent;
         }
 
-        public PlistReal(double value)
-        {
-            CreatePlistNode(plist_type.PLIST_REAL);
-            LibPlist.plist_set_real_val(_node, value);
-        }
+        public override PlistNode Copy() => new PlistReal(Value);
 
-        public override PlistNode Copy()
+        public double Value
         {
-            PlistReal plistReal = new PlistReal();
-            LibPlist.plist_set_real_val(plistReal._node, GetValue());
+            get
+            {
+                LibPlist.plist_get_real_val(_node, out double value);
+                return value;
+            }
 
-            return plistReal;
-        }
-
-        public void SetValue(double value)
-        {
-            LibPlist.plist_set_real_val(_node, value);
-        }
-
-        public double GetValue()
-        {
-            LibPlist.plist_get_real_val(_node, out double value);
-            return value;
+            set => LibPlist.plist_set_real_val(_node, value);
         }
     }
 }

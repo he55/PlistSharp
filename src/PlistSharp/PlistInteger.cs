@@ -2,9 +2,10 @@ namespace PlistSharp
 {
     public class PlistInteger : PlistNode
     {
-        public PlistInteger(PlistStructure? parent = null)
+        public PlistInteger(ulong value, PlistStructure? parent = null)
         {
-            CreatePlistNode(plist_type.PLIST_UINT, parent);
+            _node = LibPlist.plist_new_uint(value);
+            _parent = parent;
         }
 
         public PlistInteger(plist_t node, PlistStructure? parent = null)
@@ -13,29 +14,17 @@ namespace PlistSharp
             _parent = parent;
         }
 
-        public PlistInteger(ulong value)
-        {
-            CreatePlistNode(plist_type.PLIST_UINT);
-            LibPlist.plist_set_uint_val(_node, value);
-        }
+        public override PlistNode Copy() => new PlistInteger(Value);
 
-        public override PlistNode Copy()
+        public ulong Value
         {
-            PlistInteger plistInteger = new PlistInteger();
-            LibPlist.plist_set_uint_val(plistInteger._node, GetValue());
+            get
+            {
+                LibPlist.plist_get_uint_val(_node, out ulong value);
+                return value;
+            }
 
-            return plistInteger;
-        }
-
-        public void SetValue(ulong value)
-        {
-            LibPlist.plist_set_uint_val(_node, value);
-        }
-
-        public ulong GetValue()
-        {
-            LibPlist.plist_get_uint_val(_node, out ulong value);
-            return value;
+            set => LibPlist.plist_set_uint_val(_node, value);
         }
     }
 }

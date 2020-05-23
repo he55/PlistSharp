@@ -11,7 +11,8 @@ namespace PlistSharp
 
         public PlistDictionary(PlistStructure? parent = null)
         {
-            CreatePlistNode(plist_type.PLIST_DICT, parent);
+            _node = LibPlist.plist_new_dict();
+            _parent = parent;
         }
 
         public PlistDictionary(plist_t node, PlistStructure? parent = null)
@@ -91,17 +92,6 @@ namespace PlistSharp
             plistDictionary.dictionary_fill(plistDictionary._node);
 
             return plistDictionary;
-        }
-
-        public override void Remove(PlistNode node)
-        {
-            LibPlist.plist_dict_get_item_key(node._node, out IntPtr ptr);
-            LibPlist.plist_dict_remove_item(_node, ptr);
-
-            string dicKey = Marshal.PtrToStringUTF8(ptr);
-            Marshal.FreeHGlobal(ptr);
-
-            _map.Remove(dicKey);
         }
 
         private void dictionary_fill(plist_t node)

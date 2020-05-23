@@ -5,9 +5,10 @@ namespace PlistSharp
 {
     public class PlistKey : PlistNode
     {
-        public PlistKey(PlistStructure? parent = null)
+        public PlistKey(string key, PlistStructure? parent = null)
         {
-            CreatePlistNode(plist_type.PLIST_KEY, parent);
+            _node = LibPlist.plist_new_string(key);
+            _parent = parent;
         }
 
         public PlistKey(plist_t node, PlistStructure? parent = null)
@@ -16,32 +17,20 @@ namespace PlistSharp
             _parent = parent;
         }
 
-        public PlistKey(string key)
+        public override PlistNode Copy() => new PlistKey(Value);
+
+        public string Value
         {
-            CreatePlistNode(plist_type.PLIST_KEY);
-            LibPlist.plist_set_key_val(_node, key);
-        }
+            get
+            {
+                LibPlist.plist_get_key_val(_node, out IntPtr ptr);
+                string value = Marshal.PtrToStringUTF8(ptr);
+                Marshal.FreeHGlobal(ptr);
 
-        public override PlistNode Copy()
-        {
-            PlistKey plistKey = new PlistKey();
-            LibPlist.plist_set_key_val(plistKey._node, GetValue());
+                return value;
+            }
 
-            return plistKey;
-        }
-
-        public void SetValue(string key)
-        {
-            LibPlist.plist_set_key_val(_node, key);
-        }
-
-        public string GetValue()
-        {
-            LibPlist.plist_get_key_val(_node, out IntPtr ptr);
-            string key = Marshal.PtrToStringUTF8(ptr);
-            Marshal.FreeHGlobal(ptr);
-
-            return key;
+            set => LibPlist.plist_set_key_val(_node, value);
         }
     }
 }

@@ -2,9 +2,10 @@ namespace PlistSharp
 {
     public class PlistBoolean : PlistNode
     {
-        public PlistBoolean(PlistStructure? parent = null)
+        public PlistBoolean(bool value, PlistStructure? parent = null)
         {
-            CreatePlistNode(plist_type.PLIST_BOOLEAN, parent);
+            _node = LibPlist.plist_new_bool(value ? (byte)1 : (byte)0);
+            _parent = parent;
         }
 
         public PlistBoolean(plist_t node, PlistStructure? parent = null)
@@ -13,29 +14,17 @@ namespace PlistSharp
             _parent = parent;
         }
 
-        public PlistBoolean(bool value)
-        {
-            CreatePlistNode(plist_type.PLIST_BOOLEAN);
-            LibPlist.plist_set_bool_val(_node, value ? (byte)1 : (byte)0);
-        }
+        public override PlistNode Copy() => new PlistBoolean(Value);
 
-        public override PlistNode Copy()
+        public bool Value
         {
-            PlistBoolean plistBoolean = new PlistBoolean();
-            LibPlist.plist_set_bool_val(plistBoolean._node, GetValue() ? (byte)1 : (byte)0);
+            get
+            {
+                LibPlist.plist_get_bool_val(_node, out byte value);
+                return value != 0;
+            }
 
-            return plistBoolean;
-        }
-
-        public void SetValue(bool value)
-        {
-            LibPlist.plist_set_bool_val(_node, value ? (byte)1 : (byte)0);
-        }
-
-        public bool GetValue()
-        {
-            LibPlist.plist_get_bool_val(_node, out byte value);
-            return value != 0;
+            set => LibPlist.plist_set_bool_val(_node, value ? (byte)1 : (byte)0);
         }
     }
 }

@@ -11,14 +11,15 @@ namespace PlistSharp
 
         public PlistArray(PlistStructure? parent = null)
         {
-            CreatePlistNode(plist_type.PLIST_ARRAY, parent);
+            _node = LibPlist.plist_new_array();
+            _parent = parent;
         }
 
         public PlistArray(plist_t node, PlistStructure? parent = null)
         {
             _node = node;
             _parent = parent;
-            array_fill(_node);
+            array_fill(node);
         }
 
         public int Count => _array.Count;
