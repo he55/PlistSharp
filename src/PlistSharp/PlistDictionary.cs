@@ -19,7 +19,7 @@ namespace PlistSharp
         {
             _node = node;
             _parent = parent;
-            dictionary_fill(_node);
+            Fill();
         }
 
         public ICollection<string> Keys => _map.Keys;
@@ -85,22 +85,15 @@ namespace PlistSharp
             return _map.GetEnumerator();
         }
 
-        public override PlistNode Copy()
-        {
-            PlistDictionary plistDictionary = new PlistDictionary();
-            plistDictionary._node = LibPlist.plist_copy(_node);
-            plistDictionary.dictionary_fill(plistDictionary._node);
+        public override PlistNode Copy() => new PlistDictionary(LibPlist.plist_copy(_node));
 
-            return plistDictionary;
-        }
-
-        private void dictionary_fill(plist_t node)
+        protected override void Fill()
         {
-            LibPlist.plist_dict_new_iter(node, out plist_dict_iter it);
+            LibPlist.plist_dict_new_iter(_node, out plist_dict_iter it);
 
             while (true)
             {
-                LibPlist.plist_dict_next_item(node, it, out IntPtr key, out plist_t subnode);
+                LibPlist.plist_dict_next_item(_node, it, out IntPtr key, out plist_t subnode);
                 if (key == IntPtr.Zero)
                 {
                     break;

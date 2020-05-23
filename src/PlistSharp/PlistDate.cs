@@ -26,6 +26,7 @@ namespace PlistSharp
                     tv_sec = tv_sec,
                     tv_usec = tv_usec
                 };
+
                 return value;
             }
 

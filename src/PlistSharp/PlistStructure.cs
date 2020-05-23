@@ -7,6 +7,8 @@ namespace PlistSharp
 {
     public abstract class PlistStructure : PlistNode
     {
+        protected abstract void Fill();
+
         public bool IsBinary { get; private set; }
 
         public uint Size => PlistType switch

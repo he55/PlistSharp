@@ -19,7 +19,7 @@ namespace PlistSharp
         {
             _node = node;
             _parent = parent;
-            array_fill(node);
+            Fill();
         }
 
         public int Count => _array.Count;
@@ -84,33 +84,26 @@ namespace PlistSharp
             return _array.GetEnumerator();
         }
 
-        public override PlistNode Copy()
-        {
-            PlistArray plistArray = new PlistArray();
-            plistArray._node = LibPlist.plist_copy(_node);
-            plistArray.array_fill(plistArray._node);
+        public override PlistNode Copy() => new PlistArray(LibPlist.plist_copy(_node));
 
-            return plistArray;
-        }
-
-        private void array_fill(plist_t node)
+        protected override void Fill()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                uint length = LibPlist.plist_array_get_size(node);
+                uint length = LibPlist.plist_array_get_size(_node);
                 for (uint i = 0; i < length; i++)
                 {
-                    plist_t item = LibPlist.plist_array_get_item(node, i);
+                    plist_t item = LibPlist.plist_array_get_item(_node, i);
                     _array.Add(FromPlist(item, this)!);
                 }
             }
             else
             {
-                LibPlist.plist_array_new_iter(node, out plist_array_iter iter);
+                LibPlist.plist_array_new_iter(_node, out plist_array_iter iter);
 
                 while (true)
                 {
-                    LibPlist.plist_array_next_item(node, iter, out plist_t subnode);
+                    LibPlist.plist_array_next_item(_node, iter, out plist_t subnode);
                     if (subnode == IntPtr.Zero)
                     {
                         break;

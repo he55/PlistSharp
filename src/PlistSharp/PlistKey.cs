@@ -25,6 +25,7 @@ namespace PlistSharp
             {
                 LibPlist.plist_get_key_val(_node, out IntPtr ptr);
                 string value = Marshal.PtrToStringUTF8(ptr);
+
                 Marshal.FreeHGlobal(ptr);
 
                 return value;
