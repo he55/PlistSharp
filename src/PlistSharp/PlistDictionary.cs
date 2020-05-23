@@ -32,19 +32,19 @@ namespace PlistSharp
             get => _map[key];
             set
             {
-                PlistNode clone = value.Copy();
-                clone._parent = this;
-                LibPlist.plist_dict_set_item(_node, key, clone._node);
-                _map[key] = clone;
+                PlistNode copy = value.Copy();
+                copy._parent = this;
+                LibPlist.plist_dict_set_item(_node, key, copy._node);
+                _map[key] = copy;
             }
         }
 
         public void Add(string key, PlistNode value)
         {
-            PlistNode clone = value.Copy();
-            clone._parent = this;
-            LibPlist.plist_dict_set_item(_node, key, clone._node);
-            _map.Add(key, clone);
+            PlistNode copy = value.Copy();
+            copy._parent = this;
+            LibPlist.plist_dict_set_item(_node, key, copy._node);
+            _map.Add(key, copy);
         }
 
         public bool ContainsKey(string key)

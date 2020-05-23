@@ -125,7 +125,9 @@ namespace PlistSharp
                 }
 
                 if (_parent == null)
+                {
                     LibPlist.plist_free(_node);
+                }
 
                 _node = (plist_t)IntPtr.Zero;
 

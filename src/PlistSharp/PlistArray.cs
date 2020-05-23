@@ -28,10 +28,10 @@ namespace PlistSharp
             get => _array[index];
             set
             {
-                PlistNode clone = value.Copy();
-                clone._parent = this;
-                LibPlist.plist_array_insert_item(_node, clone._node, (uint)index);
-                _array[index] = clone;
+                PlistNode copy = value.Copy();
+                copy._parent = this;
+                LibPlist.plist_array_insert_item(_node, copy._node, (uint)index);
+                _array[index] = copy;
             }
         }
 
@@ -42,10 +42,10 @@ namespace PlistSharp
 
         public void Insert(int index, PlistNode item)
         {
-            PlistNode clone = item.Copy();
-            clone._parent = this;
-            LibPlist.plist_array_insert_item(_node, clone._node, (uint)index);
-            _array.Insert(index, clone);
+            PlistNode copy = item.Copy();
+            copy._parent = this;
+            LibPlist.plist_array_insert_item(_node, copy._node, (uint)index);
+            _array.Insert(index, copy);
         }
 
         public void RemoveAt(int index)
@@ -56,10 +56,10 @@ namespace PlistSharp
 
         public void Add(PlistNode item)
         {
-            PlistNode clone = item.Copy();
-            clone._parent = this;
-            LibPlist.plist_array_append_item(_node, clone._node);
-            _array.Add(clone);
+            PlistNode copy = item.Copy();
+            copy._parent = this;
+            LibPlist.plist_array_append_item(_node, copy._node);
+            _array.Add(copy);
         }
 
         public void Clear()
