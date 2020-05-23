@@ -101,7 +101,7 @@ namespace PlistSharp
             while (true)
             {
                 LibPlist.plist_dict_next_item(node, it, out IntPtr key, out plist_t subnode);
-                if (key == IntPtr.Zero || subnode == IntPtr.Zero)
+                if (key == IntPtr.Zero)
                 {
                     break;
                 }
