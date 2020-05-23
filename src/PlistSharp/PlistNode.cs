@@ -2,10 +2,12 @@ using System;
 
 namespace PlistSharp
 {
-    public class PlistNode : IDisposable
+    public abstract class PlistNode : IDisposable
     {
         internal PlistStructure? _parent;
         internal plist_t _node;
+
+        public abstract PlistNode Copy();
 
         public void CreatePlistNode(plist_type type, PlistStructure? parent = null)
         {
@@ -48,11 +50,6 @@ namespace PlistSharp
                 case plist_type.PLIST_NONE:
                     break;
             }
-        }
-
-        public virtual PlistNode Copy()
-        {
-            throw new NotImplementedException();
         }
 
         public plist_type GetPlistType()

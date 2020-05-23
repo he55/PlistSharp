@@ -5,14 +5,15 @@ using System.Text;
 
 namespace PlistSharp
 {
-    public class PlistStructure : PlistNode
+    public abstract class PlistStructure : PlistNode
     {
         public bool IsBinary { get; private set; }
 
+        public abstract void Remove(PlistNode node);
+
         public uint GetSize()
         {
-            plist_type type = LibPlist.plist_get_node_type(_node);
-            switch (type)
+            switch (LibPlist.plist_get_node_type(_node))
             {
                 case plist_type.PLIST_ARRAY:
                     return LibPlist.plist_array_get_size(_node);
@@ -40,11 +41,6 @@ namespace PlistSharp
             Marshal.Copy(bin, ret, 0, (int)length);
             Marshal.FreeHGlobal(bin);
             return ret;
-        }
-
-        public virtual void Remove(PlistNode node)
-        {
-            throw new NotImplementedException();
         }
 
         private static PlistStructure? ImportStruct(plist_t root)
