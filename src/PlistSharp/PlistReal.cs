@@ -19,7 +19,7 @@ namespace PlistSharp
             LibPlist.plist_set_real_val(_node, value);
         }
 
-        public override PlistNode Clone()
+        public override PlistNode Copy()
         {
             PlistReal plistReal = new PlistReal();
             LibPlist.plist_set_real_val(plistReal._node, GetValue());

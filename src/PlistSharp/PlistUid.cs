@@ -19,7 +19,7 @@ namespace PlistSharp
             LibPlist.plist_set_uid_val(_node, value);
         }
 
-        public override PlistNode Clone()
+        public override PlistNode Copy()
         {
             PlistUid plistUid = new PlistUid();
             LibPlist.plist_set_uid_val(plistUid._node, GetValue());

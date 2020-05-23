@@ -19,7 +19,7 @@ namespace PlistSharp
             LibPlist.plist_set_bool_val(_node, value ? (byte)1 : (byte)0);
         }
 
-        public override PlistNode Clone()
+        public override PlistNode Copy()
         {
             PlistBoolean plistBoolean = new PlistBoolean();
             LibPlist.plist_set_bool_val(plistBoolean._node, GetValue() ? (byte)1 : (byte)0);

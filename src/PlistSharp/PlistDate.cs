@@ -19,7 +19,7 @@ namespace PlistSharp
             LibPlist.plist_set_date_val(_node, (int)t.tv_sec, t.tv_usec);
         }
 
-        public override PlistNode Clone()
+        public override PlistNode Copy()
         {
             PlistDate plistDate = new PlistDate();
             timeval t = GetValue();

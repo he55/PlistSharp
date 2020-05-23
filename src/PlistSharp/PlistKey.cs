@@ -22,7 +22,7 @@ namespace PlistSharp
             LibPlist.plist_set_key_val(_node, key);
         }
 
-        public override PlistNode Clone()
+        public override PlistNode Copy()
         {
             PlistKey plistKey = new PlistKey();
             LibPlist.plist_set_key_val(plistKey._node, GetValue());

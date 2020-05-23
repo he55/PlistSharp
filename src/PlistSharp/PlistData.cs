@@ -27,7 +27,7 @@ namespace PlistSharp
             handle.Free();
         }
 
-        public override PlistNode Clone()
+        public override PlistNode Copy()
         {
             PlistData plistData = new PlistData();
 

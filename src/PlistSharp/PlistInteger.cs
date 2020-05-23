@@ -19,7 +19,7 @@ namespace PlistSharp
             LibPlist.plist_set_uint_val(_node, value);
         }
 
-        public override PlistNode Clone()
+        public override PlistNode Copy()
         {
             PlistInteger plistInteger = new PlistInteger();
             LibPlist.plist_set_uint_val(plistInteger._node, GetValue());

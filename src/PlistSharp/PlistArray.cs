@@ -28,7 +28,7 @@ namespace PlistSharp
             get => _array[index];
             set
             {
-                PlistNode clone = value.Clone();
+                PlistNode clone = value.Copy();
                 clone._parent = this;
                 LibPlist.plist_array_insert_item(_node, clone._node, (uint)index);
                 _array[index] = clone;
@@ -42,7 +42,7 @@ namespace PlistSharp
 
         public void Insert(int index, PlistNode item)
         {
-            PlistNode clone = item.Clone();
+            PlistNode clone = item.Copy();
             clone._parent = this;
             LibPlist.plist_array_insert_item(_node, clone._node, (uint)index);
             _array.Insert(index, clone);
@@ -56,7 +56,7 @@ namespace PlistSharp
 
         public void Add(PlistNode item)
         {
-            PlistNode clone = item.Clone();
+            PlistNode clone = item.Copy();
             clone._parent = this;
             LibPlist.plist_array_append_item(_node, clone._node);
             _array.Add(clone);
@@ -83,7 +83,7 @@ namespace PlistSharp
             return _array.GetEnumerator();
         }
 
-        public override PlistNode Clone()
+        public override PlistNode Copy()
         {
             PlistArray plistArray = new PlistArray();
             plistArray._node = LibPlist.plist_copy(_node);

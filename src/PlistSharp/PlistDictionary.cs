@@ -32,7 +32,7 @@ namespace PlistSharp
             get => _map[key];
             set
             {
-                PlistNode clone = value.Clone();
+                PlistNode clone = value.Copy();
                 clone._parent = this;
                 LibPlist.plist_dict_set_item(_node, key, clone._node);
                 _map[key] = clone;
@@ -41,7 +41,7 @@ namespace PlistSharp
 
         public void Add(string key, PlistNode value)
         {
-            PlistNode clone = value.Clone();
+            PlistNode clone = value.Copy();
             clone._parent = this;
             LibPlist.plist_dict_set_item(_node, key, clone._node);
             _map.Add(key, clone);
@@ -84,7 +84,7 @@ namespace PlistSharp
             return _map.GetEnumerator();
         }
 
-        public override PlistNode Clone()
+        public override PlistNode Copy()
         {
             PlistDictionary plistDictionary = new PlistDictionary();
             plistDictionary._node = LibPlist.plist_copy(_node);

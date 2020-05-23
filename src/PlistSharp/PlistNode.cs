@@ -50,7 +50,7 @@ namespace PlistSharp
             }
         }
 
-        public virtual PlistNode Clone()
+        public virtual PlistNode Copy()
         {
             throw new NotImplementedException();
         }
