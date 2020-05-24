@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlistSharp", "src\PlistSharp\PlistSharp.csproj", "{C30C0D27-E132-464A-A142-0CB1892D1828}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadPlist", "samples\ReadPlist\ReadPlist.csproj", "{AAEAA72E-2036-4105-9144-1592774DE3FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C30C0D27-E132-464A-A142-0CB1892D1828}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C30C0D27-E132-464A-A142-0CB1892D1828}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C30C0D27-E132-464A-A142-0CB1892D1828}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAEAA72E-2036-4105-9144-1592774DE3FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAEAA72E-2036-4105-9144-1592774DE3FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAEAA72E-2036-4105-9144-1592774DE3FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAEAA72E-2036-4105-9144-1592774DE3FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
