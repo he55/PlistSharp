@@ -6,10 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="dict.plist" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <None Update="dict.plist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <ProjectReference Include="..\..\src\PlistSharp\PlistSharp.csproj" />
   </ItemGroup>
 

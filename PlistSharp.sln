@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlistSharp", "src\PlistSharp\PlistSharp.csproj", "{C30C0D27-E132-464A-A142-0CB1892D1828}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadPlist", "samples\ReadPlist\ReadPlist.csproj", "{AAEAA72E-2036-4105-9144-1592774DE3FD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{9E590F5C-67B5-4092-A27C-37B6F0CF3E98}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basic", "samples\Basic\Basic.csproj", "{9F6B1BAC-B58E-4A7C-BC62-A140E7E9AACB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,13 +19,16 @@ Global
 		{C30C0D27-E132-464A-A142-0CB1892D1828}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C30C0D27-E132-464A-A142-0CB1892D1828}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C30C0D27-E132-464A-A142-0CB1892D1828}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AAEAA72E-2036-4105-9144-1592774DE3FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AAEAA72E-2036-4105-9144-1592774DE3FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AAEAA72E-2036-4105-9144-1592774DE3FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AAEAA72E-2036-4105-9144-1592774DE3FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F6B1BAC-B58E-4A7C-BC62-A140E7E9AACB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F6B1BAC-B58E-4A7C-BC62-A140E7E9AACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F6B1BAC-B58E-4A7C-BC62-A140E7E9AACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F6B1BAC-B58E-4A7C-BC62-A140E7E9AACB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9F6B1BAC-B58E-4A7C-BC62-A140E7E9AACB} = {9E590F5C-67B5-4092-A27C-37B6F0CF3E98}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B41E3B2-423E-404F-9F20-68A3BBDE7A92}

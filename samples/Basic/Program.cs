@@ -1,16 +1,20 @@
 using PlistSharp;
 
-namespace ReadPlist
+namespace Basic
 {
     class Program
     {
         static void Main(string[] args)
         {
-            PlistDictionary dict = (PlistDictionary)PlistDictionary.FromFile("dict.plist");
+            ReadPlist();
+        }
 
+        static void ReadPlist()
+        {
+            PlistDictionary dict = (PlistDictionary)PlistStructure.FromFile("dict.plist");
             PlistArray array = (PlistArray)dict["array"];
 
-            foreach (var item in array)
+            foreach (PlistNode item in array)
             {
 
             }
@@ -21,7 +25,6 @@ namespace ReadPlist
             PlistInteger plistInteger = (PlistInteger)dict["integer"];
             PlistReal plistReal = (PlistReal)dict["real"];
             PlistString plistString = (PlistString)dict["string"];
-
         }
     }
 }

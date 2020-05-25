@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <Authors>he55</Authors>
-    <Version>0.1.1</Version>
+    <Version>1.0</Version>
     <Description>.NET Core bindings for libplist.</Description>
     <PackageTags>plist</PackageTags>
     <RepositoryUrl>https://github.com/he55/PlistSharp</RepositoryUrl>
