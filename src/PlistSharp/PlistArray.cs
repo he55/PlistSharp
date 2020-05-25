@@ -22,17 +22,19 @@ namespace PlistSharp
             Fill();
         }
 
-        public int Count => _array.Count;
+        public override int Count => _array.Count;
+
+        public override PlistNode Copy() => new PlistArray(LibPlist.plist_copy(_node));
 
         public PlistNode this[int index]
         {
             get => _array[index];
             set
             {
-                PlistNode copy = value.Copy();
-                copy._parent = this;
-                LibPlist.plist_array_insert_item(_node, copy._node, (uint)index);
-                _array[index] = copy;
+                value = value.Copy();
+                value._parent = this;
+                LibPlist.plist_array_insert_item(_node, value._node, (uint)index);
+                _array[index] = value;
             }
         }
 
@@ -43,10 +45,10 @@ namespace PlistSharp
 
         public void Insert(int index, PlistNode item)
         {
-            PlistNode copy = item.Copy();
-            copy._parent = this;
-            LibPlist.plist_array_insert_item(_node, copy._node, (uint)index);
-            _array.Insert(index, copy);
+            item = item.Copy();
+            item._parent = this;
+            LibPlist.plist_array_insert_item(_node, item._node, (uint)index);
+            _array.Insert(index, item);
         }
 
         public void RemoveAt(int index)
@@ -57,10 +59,10 @@ namespace PlistSharp
 
         public void Add(PlistNode item)
         {
-            PlistNode copy = item.Copy();
-            copy._parent = this;
-            LibPlist.plist_array_append_item(_node, copy._node);
-            _array.Add(copy);
+            item = item.Copy();
+            item._parent = this;
+            LibPlist.plist_array_append_item(_node, item._node);
+            _array.Add(item);
         }
 
         public void Clear()
@@ -84,8 +86,6 @@ namespace PlistSharp
             return _array.GetEnumerator();
         }
 
-        public override PlistNode Copy() => new PlistArray(LibPlist.plist_copy(_node));
-
         protected override void Fill()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -94,7 +94,7 @@ namespace PlistSharp
                 for (uint i = 0; i < length; i++)
                 {
                     plist_t item = LibPlist.plist_array_get_item(_node, i);
-                    _array.Add(FromPlist(item, this)!);
+                    _array.Add(FromPlist(item, this));
                 }
             }
             else
@@ -108,7 +108,7 @@ namespace PlistSharp
                     {
                         break;
                     }
-                    _array.Add(FromPlist(subnode, this)!);
+                    _array.Add(FromPlist(subnode, this));
                 }
                 Marshal.FreeHGlobal(iter);
             }

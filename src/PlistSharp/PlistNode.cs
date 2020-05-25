@@ -11,7 +11,7 @@ namespace PlistSharp
 
         public plist_type PlistType => LibPlist.plist_get_node_type(_node);
 
-        public static PlistNode? FromPlist(plist_t node, PlistStructure? parent = null)
+        public static PlistNode FromPlist(plist_t node, PlistStructure? parent = null)
         {
             plist_type type = LibPlist.plist_get_node_type(node);
             return type switch
@@ -26,7 +26,7 @@ namespace PlistSharp
                 plist_type.PLIST_UID => new PlistUid(node, parent),
                 plist_type.PLIST_DATE => new PlistDate(node, parent),
                 plist_type.PLIST_DATA => new PlistData(node, parent),
-                _ => null,
+                _ => throw new NotSupportedException(),
             };
         }
 

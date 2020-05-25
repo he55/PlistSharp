@@ -26,26 +26,28 @@ namespace PlistSharp
 
         public ICollection<PlistNode> Values => _map.Values;
 
-        public int Count => _map.Count;
+        public override PlistNode Copy() => new PlistDictionary(LibPlist.plist_copy(_node));
+
+        public override int Count => _map.Count;
 
         public PlistNode this[string key]
         {
             get => _map[key];
             set
             {
-                PlistNode copy = value.Copy();
-                copy._parent = this;
-                LibPlist.plist_dict_set_item(_node, key, copy._node);
-                _map[key] = copy;
+                value = value.Copy();
+                value._parent = this;
+                LibPlist.plist_dict_set_item(_node, key, value._node);
+                _map[key] = value;
             }
         }
 
         public void Add(string key, PlistNode value)
         {
-            PlistNode copy = value.Copy();
-            copy._parent = this;
-            LibPlist.plist_dict_set_item(_node, key, copy._node);
-            _map.Add(key, copy);
+            value = value.Copy();
+            value._parent = this;
+            LibPlist.plist_dict_set_item(_node, key, value._node);
+            _map.Add(key, value);
         }
 
         public bool ContainsKey(string key)
@@ -85,8 +87,6 @@ namespace PlistSharp
             return _map.GetEnumerator();
         }
 
-        public override PlistNode Copy() => new PlistDictionary(LibPlist.plist_copy(_node));
-
         protected override void Fill()
         {
             LibPlist.plist_dict_new_iter(_node, out plist_dict_iter it);
@@ -100,7 +100,7 @@ namespace PlistSharp
                 }
 
                 string dicKey = Marshal.PtrToStringUTF8(key);
-                _map[dicKey] = FromPlist(subnode, this)!;
+                _map[dicKey] = FromPlist(subnode, this);
 
                 Marshal.FreeHGlobal(key);
             }

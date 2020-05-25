@@ -9,14 +9,9 @@ namespace PlistSharp
     {
         protected abstract void Fill();
 
-        public bool IsBinary { get; private set; }
+        public abstract int Count { get; }
 
-        public uint Size => PlistType switch
-        {
-            plist_type.PLIST_ARRAY => LibPlist.plist_array_get_size(_node),
-            plist_type.PLIST_DICT => LibPlist.plist_dict_get_size(_node),
-            _ => throw new NotSupportedException()
-        };
+        public bool IsBinary { get; private set; }
 
         public string ToPlistXml()
         {
@@ -97,7 +92,7 @@ namespace PlistSharp
             {
                 case plist_type.PLIST_ARRAY:
                 case plist_type.PLIST_DICT:
-                    return (PlistStructure)FromPlist(root)!;
+                    return (PlistStructure)FromPlist(root);
                 default:
                     throw new NotSupportedException();
             }
