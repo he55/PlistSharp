@@ -10,7 +10,7 @@ namespace PlistSharp
             GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             IntPtr ptr = handle.AddrOfPinnedObject();
 
-            _node = LibPlist.plist_new_data(ptr, (ulong)buffer.Length);
+            _node = plist.plist_new_data(ptr, (ulong)buffer.Length);
             _parent = parent;
 
             handle.Free();
@@ -28,7 +28,7 @@ namespace PlistSharp
         {
             get
             {
-                LibPlist.plist_get_data_val(_node, out IntPtr ptr, out ulong length);
+                plist.plist_get_data_val(_node, out IntPtr ptr, out ulong length);
                 byte[] buffer = new byte[length];
 
                 Marshal.Copy(ptr, buffer, 0, (int)length);
@@ -42,7 +42,7 @@ namespace PlistSharp
                 GCHandle handle = GCHandle.Alloc(value, GCHandleType.Pinned);
 
                 IntPtr ptr = handle.AddrOfPinnedObject();
-                LibPlist.plist_set_data_val(_node, ptr, (ulong)value.Length);
+                plist.plist_set_data_val(_node, ptr, (ulong)value.Length);
 
                 handle.Free();
             }

@@ -3,27 +3,27 @@ using System.Runtime.InteropServices;
 
 namespace PlistSharp
 {
-    public class PlistString : PlistNode
+    public class PlistKey : PlistNode
     {
-        public PlistString(string value, PlistStructure? parent = null)
+        public PlistKey(string key, PlistStructure? parent = null)
         {
-            _node = LibPlist.plist_new_string(value);
+            _node = plist.plist_new_string(key);
             _parent = parent;
         }
 
-        public PlistString(plist_t node, PlistStructure? parent = null)
+        public PlistKey(plist_t node, PlistStructure? parent = null)
         {
             _node = node;
             _parent = parent;
         }
 
-        public override PlistNode Copy() => new PlistString(Value);
+        public override PlistNode Copy() => new PlistKey(Value);
 
         public string Value
         {
             get
             {
-                LibPlist.plist_get_string_val(_node, out IntPtr ptr);
+                plist.plist_get_key_val(_node, out IntPtr ptr);
                 string value = Marshal.PtrToStringUTF8(ptr);
 
                 Marshal.FreeHGlobal(ptr);
@@ -31,7 +31,7 @@ namespace PlistSharp
                 return value;
             }
 
-            set => LibPlist.plist_set_string_val(_node, value);
+            set => plist.plist_set_key_val(_node, value);
         }
     }
 }

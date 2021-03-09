@@ -11,7 +11,7 @@ namespace PlistSharp
 
         public PlistDictionary(PlistStructure? parent = null)
         {
-            _node = LibPlist.plist_new_dict();
+            _node = plist.plist_new_dict();
             _parent = parent;
         }
 
@@ -26,7 +26,7 @@ namespace PlistSharp
 
         public ICollection<PlistNode> Values => _map.Values;
 
-        public override PlistNode Copy() => new PlistDictionary(LibPlist.plist_copy(_node));
+        public override PlistNode Copy() => new PlistDictionary(plist.plist_copy(_node));
 
         public override int Count => _map.Count;
 
@@ -37,7 +37,7 @@ namespace PlistSharp
             {
                 value = value.Copy();
                 value._parent = this;
-                LibPlist.plist_dict_set_item(_node, key, value._node);
+                plist.plist_dict_set_item(_node, key, value._node);
                 _map[key] = value;
             }
         }
@@ -46,7 +46,7 @@ namespace PlistSharp
         {
             value = value.Copy();
             value._parent = this;
-            LibPlist.plist_dict_set_item(_node, key, value._node);
+            plist.plist_dict_set_item(_node, key, value._node);
             _map.Add(key, value);
         }
 
@@ -57,7 +57,7 @@ namespace PlistSharp
 
         public bool Remove(string key)
         {
-            LibPlist.plist_dict_remove_item(_node, key);
+            plist.plist_dict_remove_item(_node, key);
             return _map.Remove(key);
         }
 
@@ -70,7 +70,7 @@ namespace PlistSharp
         {
             foreach (string key in _map.Keys)
             {
-                LibPlist.plist_dict_remove_item(_node, key);
+                plist.plist_dict_remove_item(_node, key);
             }
             _map.Clear();
         }
@@ -89,11 +89,11 @@ namespace PlistSharp
 
         protected override void Fill()
         {
-            LibPlist.plist_dict_new_iter(_node, out plist_dict_iter it);
+            plist.plist_dict_new_iter(_node, out plist_dict_iter it);
 
             while (true)
             {
-                LibPlist.plist_dict_next_item(_node, it, out IntPtr key, out plist_t subnode);
+                plist.plist_dict_next_item(_node, it, out IntPtr key, out plist_t subnode);
                 if (key == IntPtr.Zero)
                 {
                     break;

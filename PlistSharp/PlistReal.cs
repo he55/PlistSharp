@@ -4,7 +4,7 @@ namespace PlistSharp
     {
         public PlistReal(double value, PlistStructure? parent = null)
         {
-            _node = LibPlist.plist_new_real(value);
+            _node = plist.plist_new_real(value);
             _parent = parent;
         }
 
@@ -20,11 +20,11 @@ namespace PlistSharp
         {
             get
             {
-                LibPlist.plist_get_real_val(_node, out double value);
+                plist.plist_get_real_val(_node, out double value);
                 return value;
             }
 
-            set => LibPlist.plist_set_real_val(_node, value);
+            set => plist.plist_set_real_val(_node, value);
         }
     }
 }

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="dict.plist" CopyToOutputDirectory="PreserveNewest" />
+    <ProjectReference Include="..\PlistSharp\PlistSharp.csproj" />
+  </ItemGroup>
+
+</Project>

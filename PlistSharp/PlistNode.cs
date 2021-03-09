@@ -9,11 +9,11 @@ namespace PlistSharp
 
         public abstract PlistNode Copy();
 
-        public plist_type PlistType => LibPlist.plist_get_node_type(_node);
+        public plist_type PlistType => plist.plist_get_node_type(_node);
 
         public static PlistNode FromPlist(plist_t node, PlistStructure? parent = null)
         {
-            plist_type type = LibPlist.plist_get_node_type(node);
+            plist_type type = plist.plist_get_node_type(node);
             return type switch
             {
                 plist_type.PLIST_DICT => new PlistDictionary(node, parent),
@@ -45,7 +45,7 @@ namespace PlistSharp
 
                 if (_parent == null)
                 {
-                    LibPlist.plist_free(_node);
+                    plist.plist_free(_node);
                 }
 
                 _node = (plist_t)IntPtr.Zero;

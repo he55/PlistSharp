@@ -4,7 +4,7 @@ namespace PlistSharp
     {
         public PlistBoolean(bool value, PlistStructure? parent = null)
         {
-            _node = LibPlist.plist_new_bool(value ? (byte)1 : (byte)0);
+            _node = plist.plist_new_bool(value ? (byte)1 : (byte)0);
             _parent = parent;
         }
 
@@ -20,11 +20,11 @@ namespace PlistSharp
         {
             get
             {
-                LibPlist.plist_get_bool_val(_node, out byte value);
+                plist.plist_get_bool_val(_node, out byte value);
                 return value != 0;
             }
 
-            set => LibPlist.plist_set_bool_val(_node, value ? (byte)1 : (byte)0);
+            set => plist.plist_set_bool_val(_node, value ? (byte)1 : (byte)0);
         }
     }
 }

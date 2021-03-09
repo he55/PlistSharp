@@ -4,7 +4,7 @@ namespace PlistSharp
     {
         public PlistInteger(ulong value, PlistStructure? parent = null)
         {
-            _node = LibPlist.plist_new_uint(value);
+            _node = plist.plist_new_uint(value);
             _parent = parent;
         }
 
@@ -20,11 +20,11 @@ namespace PlistSharp
         {
             get
             {
-                LibPlist.plist_get_uint_val(_node, out ulong value);
+                plist.plist_get_uint_val(_node, out ulong value);
                 return value;
             }
 
-            set => LibPlist.plist_set_uint_val(_node, value);
+            set => plist.plist_set_uint_val(_node, value);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace PlistSharp
 
         public string ToPlistXml()
         {
-            LibPlist.plist_to_xml(_node, out IntPtr ptr, out uint length);
+            plist.plist_to_xml(_node, out IntPtr ptr, out uint length);
             string xml = Marshal.PtrToStringUTF8(ptr, (int)length);
 
             Marshal.FreeHGlobal(ptr);
@@ -25,7 +25,7 @@ namespace PlistSharp
 
         public byte[] ToPlistBin()
         {
-            LibPlist.plist_to_bin(_node, out IntPtr ptr, out uint length);
+            plist.plist_to_bin(_node, out IntPtr ptr, out uint length);
             byte[] buffer = new byte[length];
 
             Marshal.Copy(ptr, buffer, 0, (int)length);
@@ -37,7 +37,7 @@ namespace PlistSharp
         public static PlistStructure FromPlistXml(string xml)
         {
             int length = Encoding.UTF8.GetByteCount(xml);
-            LibPlist.plist_from_xml(xml, (uint)length, out plist_t root);
+            plist.plist_from_xml(xml, (uint)length, out plist_t root);
 
             return ImportStruct(root);
         }
@@ -48,9 +48,9 @@ namespace PlistSharp
 
             fixed (byte* p = bin)
             {
-                LibPlist.plist_from_bin((IntPtr)p, length, out plist_t root);
+                plist.plist_from_bin((IntPtr)p, length, out plist_t root);
                 PlistStructure structure = ImportStruct(root);
-                structure.IsBinary = LibPlist.plist_is_binary((IntPtr)p, length) != 0;
+                structure.IsBinary = plist.plist_is_binary((IntPtr)p, length) != 0;
 
                 return structure;
             }
@@ -76,9 +76,9 @@ namespace PlistSharp
 
             fixed (byte* p = buffer)
             {
-                LibPlist.plist_from_memory(p, length, out plist_t root);
+                plist.plist_from_memory(p, length, out plist_t root);
                 PlistStructure structure = ImportStruct(root);
-                structure.IsBinary = LibPlist.plist_is_binary(p, length) != 0;
+                structure.IsBinary = plist.plist_is_binary(p, length) != 0;
 
                 return structure;
             }
@@ -86,7 +86,7 @@ namespace PlistSharp
 
         private static PlistStructure ImportStruct(plist_t root)
         {
-            plist_type type = LibPlist.plist_get_node_type(root);
+            plist_type type = plist.plist_get_node_type(root);
 
             switch (type)
             {

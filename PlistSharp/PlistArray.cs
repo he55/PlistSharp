@@ -11,7 +11,7 @@ namespace PlistSharp
 
         public PlistArray(PlistStructure? parent = null)
         {
-            _node = LibPlist.plist_new_array();
+            _node = plist.plist_new_array();
             _parent = parent;
         }
 
@@ -24,7 +24,7 @@ namespace PlistSharp
 
         public override int Count => _array.Count;
 
-        public override PlistNode Copy() => new PlistArray(LibPlist.plist_copy(_node));
+        public override PlistNode Copy() => new PlistArray(plist.plist_copy(_node));
 
         public PlistNode this[int index]
         {
@@ -33,7 +33,7 @@ namespace PlistSharp
             {
                 value = value.Copy();
                 value._parent = this;
-                LibPlist.plist_array_insert_item(_node, value._node, (uint)index);
+                plist.plist_array_insert_item(_node, value._node, (uint)index);
                 _array[index] = value;
             }
         }
@@ -47,13 +47,13 @@ namespace PlistSharp
         {
             item = item.Copy();
             item._parent = this;
-            LibPlist.plist_array_insert_item(_node, item._node, (uint)index);
+            plist.plist_array_insert_item(_node, item._node, (uint)index);
             _array.Insert(index, item);
         }
 
         public void RemoveAt(int index)
         {
-            LibPlist.plist_array_remove_item(_node, (uint)index);
+            plist.plist_array_remove_item(_node, (uint)index);
             _array.RemoveAt(index);
         }
 
@@ -61,7 +61,7 @@ namespace PlistSharp
         {
             item = item.Copy();
             item._parent = this;
-            LibPlist.plist_array_append_item(_node, item._node);
+            plist.plist_array_append_item(_node, item._node);
             _array.Add(item);
         }
 
@@ -69,7 +69,7 @@ namespace PlistSharp
         {
             for (int i = 0; i < _array.Count; i++)
             {
-                LibPlist.plist_array_remove_item(_node, 0);
+                plist.plist_array_remove_item(_node, 0);
             }
             _array.Clear();
         }
@@ -90,20 +90,20 @@ namespace PlistSharp
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                uint length = LibPlist.plist_array_get_size(_node);
+                uint length = plist.plist_array_get_size(_node);
                 for (uint i = 0; i < length; i++)
                 {
-                    plist_t item = LibPlist.plist_array_get_item(_node, i);
+                    plist_t item = plist.plist_array_get_item(_node, i);
                     _array.Add(FromPlist(item, this));
                 }
             }
             else
             {
-                LibPlist.plist_array_new_iter(_node, out plist_array_iter iter);
+                plist.plist_array_new_iter(_node, out plist_array_iter iter);
 
                 while (true)
                 {
-                    LibPlist.plist_array_next_item(_node, iter, out plist_t subnode);
+                    plist.plist_array_next_item(_node, iter, out plist_t subnode);
                     if (subnode == IntPtr.Zero)
                     {
                         break;
