@@ -23,7 +23,6 @@ namespace PlistSharp
                 plist.plist_get_uid_val(_node, out ulong value);
                 return value;
             }
-
             set => plist.plist_set_uid_val(_node, value);
         }
     }

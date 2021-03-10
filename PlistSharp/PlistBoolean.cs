@@ -23,7 +23,6 @@ namespace PlistSharp
                 plist.plist_get_bool_val(_node, out byte value);
                 return value != 0;
             }
-
             set => plist.plist_set_bool_val(_node, value ? (byte)1 : (byte)0);
         }
     }

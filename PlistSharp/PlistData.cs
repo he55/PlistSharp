@@ -36,7 +36,6 @@ namespace PlistSharp
 
                 return buffer;
             }
-
             set
             {
                 GCHandle handle = GCHandle.Alloc(value, GCHandleType.Pinned);

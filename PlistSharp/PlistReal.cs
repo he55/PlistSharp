@@ -23,7 +23,6 @@ namespace PlistSharp
                 plist.plist_get_real_val(_node, out double value);
                 return value;
             }
-
             set => plist.plist_set_real_val(_node, value);
         }
     }

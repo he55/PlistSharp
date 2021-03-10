@@ -33,7 +33,6 @@ namespace PlistSharp
                 Marshal.FreeHGlobal(ptr);
                 return value;
             }
-
             set => plist.plist_set_string_val(_node, value);
         }
     }
