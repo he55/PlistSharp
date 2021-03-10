@@ -61,7 +61,7 @@ namespace PlistSharp
             return _map.Remove(key);
         }
 
-        public bool TryGetValue(string key, out PlistNode value)
+        public bool TryGetValue(string key, out PlistNode? value)
         {
             return _map.TryGetValue(key, out value);
         }
@@ -99,9 +99,13 @@ namespace PlistSharp
                     break;
                 }
 
-                string dicKey = Marshal.PtrToStringUTF8(key);
-                _map[dicKey] = FromPlist(subnode, this);
+                string? dicKey = Marshal.PtrToStringUTF8(key);
+                if (dicKey == null)
+                {
+                    throw new NullReferenceException();
+                }
 
+                _map[dicKey] = FromPlist(subnode, this);
                 Marshal.FreeHGlobal(key);
             }
 

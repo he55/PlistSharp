@@ -24,10 +24,13 @@ namespace PlistSharp
             get
             {
                 plist.plist_get_string_val(_node, out IntPtr ptr);
-                string value = Marshal.PtrToStringUTF8(ptr);
+                string? value = Marshal.PtrToStringUTF8(ptr);
+                if (value == null)
+                {
+                    throw new NullReferenceException();
+                }
 
                 Marshal.FreeHGlobal(ptr);
-
                 return value;
             }
 
