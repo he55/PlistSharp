@@ -16,7 +16,7 @@ namespace PlistSharp
         public string ToPlistXml()
         {
             plist.plist_to_xml(_node, out IntPtr ptr, out uint length);
-            string xml = Marshal.PtrToStringUTF8(ptr, (int)length);
+            string xml = StringHelper.PtrToStringUTF8(ptr, (int)length);
 
             Marshal.FreeHGlobal(ptr);
 
@@ -42,7 +42,7 @@ namespace PlistSharp
             return ImportStruct(root);
         }
 
-        private static unsafe PlistStructure FromPlistBin(ReadOnlySpan<byte> bin)
+        private static unsafe PlistStructure FromPlistBin(byte[] bin)
         {
             uint length = (uint)bin.Length;
 
@@ -58,23 +58,18 @@ namespace PlistSharp
 
         public static PlistStructure FromFile(string path)
         {
-            using FileStream fileStream = new FileStream(path, FileMode.Open);
+            FileStream fileStream = new FileStream(path, FileMode.Open);
             return FromFile(fileStream);
         }
 
-        public static PlistStructure FromFile(Stream stream)
+        public static unsafe PlistStructure FromFile(Stream stream)
         {
-            using MemoryStream memoryStream = new MemoryStream();
+            MemoryStream memoryStream = new MemoryStream();
             stream.CopyTo(memoryStream);
 
-            return FromFile(memoryStream.ToArray());
-        }
+            uint length = (uint)memoryStream.Length;
 
-        public static unsafe PlistStructure FromFile(ReadOnlySpan<byte> buffer)
-        {
-            uint length = (uint)buffer.Length;
-
-            fixed (byte* p = buffer)
+            fixed (byte* p = memoryStream.ToArray())
             {
                 plist.plist_from_memory(p, length, out plist_t root);
                 PlistStructure structure = ImportStruct(root);

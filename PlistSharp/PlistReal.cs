@@ -2,13 +2,13 @@ namespace PlistSharp
 {
     public class PlistReal : PlistNode
     {
-        public PlistReal(double value, PlistStructure? parent = null)
+        public PlistReal(double value, PlistStructure parent = null)
         {
             _node = plist.plist_new_real(value);
             _parent = parent;
         }
 
-        public PlistReal(plist_t node, PlistStructure? parent = null)
+        public PlistReal(plist_t node, PlistStructure parent = null)
         {
             _node = node;
             _parent = parent;

@@ -2,13 +2,13 @@ namespace PlistSharp
 {
     public class PlistBoolean : PlistNode
     {
-        public PlistBoolean(bool value, PlistStructure? parent = null)
+        public PlistBoolean(bool value, PlistStructure parent = null)
         {
             _node = plist.plist_new_bool(value ? (byte)1 : (byte)0);
             _parent = parent;
         }
 
-        public PlistBoolean(plist_t node, PlistStructure? parent = null)
+        public PlistBoolean(plist_t node, PlistStructure parent = null)
         {
             _node = node;
             _parent = parent;

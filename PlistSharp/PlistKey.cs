@@ -5,13 +5,13 @@ namespace PlistSharp
 {
     public class PlistKey : PlistNode
     {
-        public PlistKey(string key, PlistStructure? parent = null)
+        public PlistKey(string key, PlistStructure parent = null)
         {
             _node = plist.plist_new_string(key);
             _parent = parent;
         }
 
-        public PlistKey(plist_t node, PlistStructure? parent = null)
+        public PlistKey(plist_t node, PlistStructure parent = null)
         {
             _node = node;
             _parent = parent;
@@ -24,7 +24,7 @@ namespace PlistSharp
             get
             {
                 plist.plist_get_key_val(_node, out IntPtr ptr);
-                string? value = Marshal.PtrToStringUTF8(ptr);
+                string value = StringHelper.PtrToStringUTF8(ptr);
                 if (value == null)
                 {
                     throw new NullReferenceException();

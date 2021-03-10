@@ -9,13 +9,13 @@ namespace PlistSharp
     {
         private readonly IList<PlistNode> _array = new List<PlistNode>();
 
-        public PlistArray(PlistStructure? parent = null)
+        public PlistArray(PlistStructure parent = null)
         {
             _node = plist.plist_new_array();
             _parent = parent;
         }
 
-        public PlistArray(plist_t node, PlistStructure? parent = null)
+        public PlistArray(plist_t node, PlistStructure parent = null)
         {
             _node = node;
             _parent = parent;

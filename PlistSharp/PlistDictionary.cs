@@ -9,13 +9,13 @@ namespace PlistSharp
     {
         private readonly IDictionary<string, PlistNode> _map = new Dictionary<string, PlistNode>();
 
-        public PlistDictionary(PlistStructure? parent = null)
+        public PlistDictionary(PlistStructure parent = null)
         {
             _node = plist.plist_new_dict();
             _parent = parent;
         }
 
-        public PlistDictionary(plist_t node, PlistStructure? parent = null)
+        public PlistDictionary(plist_t node, PlistStructure parent = null)
         {
             _node = node;
             _parent = parent;
@@ -61,7 +61,7 @@ namespace PlistSharp
             return _map.Remove(key);
         }
 
-        public bool TryGetValue(string key, out PlistNode? value)
+        public bool TryGetValue(string key, out PlistNode value)
         {
             return _map.TryGetValue(key, out value);
         }
@@ -99,7 +99,7 @@ namespace PlistSharp
                     break;
                 }
 
-                string? dicKey = Marshal.PtrToStringUTF8(key);
+                string dicKey = StringHelper.PtrToStringUTF8(key);
                 if (dicKey == null)
                 {
                     throw new NullReferenceException();

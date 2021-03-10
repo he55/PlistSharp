@@ -5,7 +5,7 @@ namespace PlistSharp
 {
     public class PlistData : PlistNode
     {
-        public PlistData(byte[] buffer, PlistStructure? parent = null)
+        public PlistData(byte[] buffer, PlistStructure parent = null)
         {
             GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             IntPtr ptr = handle.AddrOfPinnedObject();
@@ -16,7 +16,7 @@ namespace PlistSharp
             handle.Free();
         }
 
-        public PlistData(plist_t node, PlistStructure? parent = null)
+        public PlistData(plist_t node, PlistStructure parent = null)
         {
             _node = node;
             _parent = parent;

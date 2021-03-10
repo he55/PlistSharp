@@ -2,13 +2,13 @@ namespace PlistSharp
 {
     public class PlistInteger : PlistNode
     {
-        public PlistInteger(ulong value, PlistStructure? parent = null)
+        public PlistInteger(ulong value, PlistStructure parent = null)
         {
             _node = plist.plist_new_uint(value);
             _parent = parent;
         }
 
-        public PlistInteger(plist_t node, PlistStructure? parent = null)
+        public PlistInteger(plist_t node, PlistStructure parent = null)
         {
             _node = node;
             _parent = parent;

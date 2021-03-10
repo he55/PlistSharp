@@ -2,13 +2,13 @@ namespace PlistSharp
 {
     public class PlistUid : PlistNode
     {
-        public PlistUid(ulong value, PlistStructure? parent = null)
+        public PlistUid(ulong value, PlistStructure parent = null)
         {
             _node = plist.plist_new_uid(value);
             _parent = parent;
         }
 
-        public PlistUid(plist_t node, PlistStructure? parent = null)
+        public PlistUid(plist_t node, PlistStructure parent = null)
         {
             _node = node;
             _parent = parent;

@@ -4,30 +4,31 @@ namespace PlistSharp
 {
     public abstract class PlistNode : IDisposable
     {
-        internal PlistStructure? _parent;
+        internal PlistStructure _parent;
         internal plist_t _node;
 
         public abstract PlistNode Copy();
 
         public plist_type PlistType => plist.plist_get_node_type(_node);
 
-        public static PlistNode FromPlist(plist_t node, PlistStructure? parent = null)
+        public static PlistNode FromPlist(plist_t node, PlistStructure parent = null)
         {
             plist_type type = plist.plist_get_node_type(node);
-            return type switch
+
+            switch (type)
             {
-                plist_type.PLIST_DICT => new PlistDictionary(node, parent),
-                plist_type.PLIST_ARRAY => new PlistArray(node, parent),
-                plist_type.PLIST_BOOLEAN => new PlistBoolean(node, parent),
-                plist_type.PLIST_UINT => new PlistInteger(node, parent),
-                plist_type.PLIST_REAL => new PlistReal(node, parent),
-                plist_type.PLIST_STRING => new PlistString(node, parent),
-                plist_type.PLIST_KEY => new PlistKey(node, parent),
-                plist_type.PLIST_UID => new PlistUid(node, parent),
-                plist_type.PLIST_DATE => new PlistDate(node, parent),
-                plist_type.PLIST_DATA => new PlistData(node, parent),
-                _ => throw new NotSupportedException(),
-            };
+                case plist_type.PLIST_DICT: return new PlistDictionary(node, parent);
+                case plist_type.PLIST_ARRAY: return new PlistArray(node, parent);
+                case plist_type.PLIST_BOOLEAN: return new PlistBoolean(node, parent);
+                case plist_type.PLIST_UINT: return new PlistInteger(node, parent);
+                case plist_type.PLIST_REAL: return new PlistReal(node, parent);
+                case plist_type.PLIST_STRING: return new PlistString(node, parent);
+                case plist_type.PLIST_KEY: return new PlistKey(node, parent);
+                case plist_type.PLIST_UID: return new PlistUid(node, parent);
+                case plist_type.PLIST_DATE: return new PlistDate(node, parent);
+                case plist_type.PLIST_DATA: return new PlistData(node, parent);
+                default: throw new NotSupportedException();
+            }
         }
 
         #region IDisposable Support
