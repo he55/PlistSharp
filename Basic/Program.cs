@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using PlistSharp;
 
 namespace Basic
@@ -55,17 +56,21 @@ namespace Basic
                 string key = item.Key;
                 PlistDictionary value = (PlistDictionary)item.Value;
 
-                applications.Add(new Application
+                Application application = new Application
                 {
                     ApplicationSINF = (PlistData)value["ApplicationSINF"],
                     PlaceholderIcon = (PlistData)value["PlaceholderIcon"],
                     iTunesMetadata = (PlistData)value["iTunesMetadata"]
-                });
+                };
+                applications.Add(application);
+
+                string path = Path.Combine(@"C:\Users\Admin\Desktop\iphonebak", $"{key}.png");
+                using (FileStream fileStream = new FileStream(path, FileMode.Create, FileAccess.Write))
+                {
+                    byte[] buffer = application.PlaceholderIcon.Value;
+                    fileStream.Write(buffer, 0, buffer.Length);
+                }
             }
-
-
-
-
         }
     }
 
