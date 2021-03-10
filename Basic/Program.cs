@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using PlistSharp;
 
 namespace Basic
@@ -39,6 +40,31 @@ namespace Basic
             };
 
 
+            List<string> installedApplications = new List<string>();
+
+            foreach (PlistString item in backupInfo.InstalledApplications)
+            {
+                installedApplications.Add(item.Value);
+            }
+
+
+            List<Application> applications = new List<Application>();
+
+            foreach (var item in backupInfo.Applications)
+            {
+                string key = item.Key;
+                PlistDictionary value = (PlistDictionary)item.Value;
+
+                applications.Add(new Application
+                {
+                    ApplicationSINF = (PlistData)value["ApplicationSINF"],
+                    PlaceholderIcon = (PlistData)value["PlaceholderIcon"],
+                    iTunesMetadata = (PlistData)value["iTunesMetadata"]
+                });
+            }
+
+
+
 
         }
     }
@@ -69,8 +95,8 @@ namespace Basic
 
     public class Application
     {
-        public object ApplicationSINF { get; set; }
-        public object PlaceholderIcon { get; set; }
-        public object iTunesMetadata { get; set; }
+        public PlistData ApplicationSINF { get; set; }
+        public PlistData PlaceholderIcon { get; set; }
+        public PlistData iTunesMetadata { get; set; }
     }
 }
