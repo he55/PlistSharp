@@ -61,24 +61,28 @@ namespace PlistSharp
 
         public static PlistStructure FromFile(string path)
         {
-            FileStream fileStream = new FileStream(path, FileMode.Open);
-            return FromFile(fileStream);
+            using (FileStream fileStream = new FileStream(path, FileMode.Open))
+            {
+                return FromFile(fileStream);
+            }
         }
 
         public static unsafe PlistStructure FromFile(Stream stream)
         {
-            MemoryStream memoryStream = new MemoryStream();
-            stream.CopyTo(memoryStream);
-
-            uint length = (uint)memoryStream.Length;
-
-            fixed (byte* p = memoryStream.ToArray())
+            using (MemoryStream memoryStream = new MemoryStream())
             {
-                plist.plist_from_memory(p, length, out plist_t root);
-                PlistStructure structure = ImportStruct(root);
-                structure.IsBinary = plist.plist_is_binary(p, length) != 0;
+                stream.CopyTo(memoryStream);
 
-                return structure;
+                uint length = (uint)memoryStream.Length;
+
+                fixed (byte* p = memoryStream.ToArray())
+                {
+                    plist.plist_from_memory(p, length, out plist_t root);
+                    PlistStructure structure = ImportStruct(root);
+                    structure.IsBinary = plist.plist_is_binary(p, length) != 0;
+
+                    return structure;
+                }
             }
         }
 

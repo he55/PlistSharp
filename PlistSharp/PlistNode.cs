@@ -50,7 +50,6 @@ namespace PlistSharp
                 }
 
                 _node = (plist_t)IntPtr.Zero;
-
                 _disposed = true;
             }
         }

@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using PlistSharp;
@@ -17,12 +15,6 @@ namespace Basic
 
         static void Main(string[] args)
         {
-            ReadPlist();
-        }
-
-        static void ReadPlist()
-        {
-
             string backupPath = @"C:\Users\Admin\Desktop\iphone7plus\675e9d258cfee8d7023e5e78ceefd4cbdbc16bf1";
             string savePath = Path.Combine(backupPath, "_0");
 
@@ -62,35 +54,47 @@ namespace Basic
             }
 
 
-
+            List<iTunesMetadataInfo> iTunesMetadataInfos = GetApplicationiTunesMetadataInfos(backupPath, savePath);
 
             string manifestDbPath = Path.Combine(backupPath, ManifestDbFile);
             SqliteConnection sqliteConnection = new SqliteConnection($"Data Source={manifestDbPath}");
             IEnumerable<Files> enumerable1 = sqliteConnection.Query<Files>("SELECT * FROM Files ORDER BY relativePath");
+
         }
 
-        static void GetApplicationsInfo(string backupPath, string savePath)
+        public static List<iTunesMetadataInfo> GetApplicationiTunesMetadataInfos(string backupPath, string savePath)
         {
             PlistDictionary infoDict = (PlistDictionary)PlistStructure.FromFile(Path.Combine(backupPath, InfoPlistFile));
+            List<iTunesMetadataInfo> iTunesMetadataInfos = new List<iTunesMetadataInfo>();
 
             foreach (var item in (PlistDictionary)infoDict["Applications"])
             {
-                string key = item.Key;
                 PlistDictionary value = (PlistDictionary)item.Value;
-
                 PlistDictionary iTunesMetadata = (PlistDictionary)PlistDictionary.FromPlistBin(((PlistData)value["iTunesMetadata"]).Value);
 
-                string iconPath = Path.Combine(savePath, $"{key}.png");
+                iTunesMetadataInfo iTunesMetadataInfo = new iTunesMetadataInfo
+                {
+                    bundleId = item.Key,
+                    bundleShortVersionString = ((PlistString)iTunesMetadata.GetValueOrDefault("bundleShortVersionString"))?.Value,
+                    itemName = ((PlistString)iTunesMetadata["itemName"]).Value,
+                    genre = ((PlistString)iTunesMetadata.GetValueOrDefault("genre"))?.Value,
+                    iconPath = Path.Combine(savePath, $"{item.Key}.png"),
+                    accountInfo = ((PlistString)((PlistDictionary)((PlistDictionary)iTunesMetadata["com.apple.iTunesStore.downloadInfo"])["accountInfo"])["AppleID"]).Value
+                };
 
-                using (FileStream fileStream = new FileStream(iconPath, FileMode.Create, FileAccess.Write))
+                iTunesMetadataInfos.Add(iTunesMetadataInfo);
+
+                using (FileStream fileStream = new FileStream(iTunesMetadataInfo.iconPath, FileMode.Create, FileAccess.Write))
                 {
                     byte[] buffer = ((PlistData)value["PlaceholderIcon"]).Value;
                     fileStream.Write(buffer, 0, buffer.Length);
                 }
             }
+
+            return iTunesMetadataInfos;
         }
 
-        static void iTunesBackup2FileSystem(string backupPath, string savePath)
+        public static void iTunesBackup2FileSystem(string backupPath, string savePath)
         {
             string manifestDbPath = Path.Combine(backupPath, ManifestDbFile);
             SqliteConnection sqliteConnection = new SqliteConnection($"Data Source={manifestDbPath}");
@@ -120,46 +124,5 @@ namespace Basic
                 }
             }
         }
-    }
-
-    public class Files
-    {
-        public string fileID { get; set; }
-        public string domain { get; set; }
-        public string relativePath { get; set; }
-        public int flags { get; set; }
-        //public byte[] file { get; set; }
-    }
-
-
-    public class BackupInfo
-    {
-        public PlistDictionary Applications { get; set; }
-        public string BuildVersion { get; set; }
-        public string DeviceName { get; set; }
-        public string DisplayName { get; set; }
-        public string GUID { get; set; }
-        public string ICCID { get; set; }
-        public string IMEI { get; set; }
-        public List<string> InstalledApplications { get; set; } = new List<string>();
-        public DateTime LastBackupDate { get; set; }
-        public string MEID { get; set; }
-        public string PhoneNumber { get; set; }
-        public string ProductType { get; set; }
-        public string ProductVersion { get; set; }
-        public string SerialNumber { get; set; }
-        public string TargetIdentifier { get; set; }
-        public string TargetType { get; set; }
-        public string UniqueIdentifier { get; set; }
-        public PlistDictionary iTunesFiles { get; set; }
-        public PlistDictionary iTunesSettings { get; set; }
-        public string iTunesVersion { get; set; }
-    }
-
-    public class Application
-    {
-        public PlistData ApplicationSINF { get; set; }
-        public PlistData PlaceholderIcon { get; set; }
-        public PlistData iTunesMetadata { get; set; }
     }
 }
