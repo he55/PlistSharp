@@ -8,10 +8,10 @@ namespace Basic
 {
     class Program
     {
-        private const string InfoPlistFile = "Info.plist";
-        private const string ManifestDbFile = "Manifest.db";
-        private const string ManifestPlistFile = "Manifest.plist";
-        private const string StatusPlistFile = "Status.plist";
+        const string InfoPlistFile = "Info.plist";
+        const string ManifestDbFile = "Manifest.db";
+        const string ManifestPlistFile = "Manifest.plist";
+        const string StatusPlistFile = "Status.plist";
 
         static void Main(string[] args)
         {
@@ -62,7 +62,7 @@ namespace Basic
 
         }
 
-        public static List<iTunesMetadataInfo> GetApplicationiTunesMetadataInfos(string backupPath, string savePath)
+        static List<iTunesMetadataInfo> GetApplicationiTunesMetadataInfos(string backupPath, string savePath)
         {
             PlistDictionary infoDict = (PlistDictionary)PlistStructure.FromFile(Path.Combine(backupPath, InfoPlistFile));
             List<iTunesMetadataInfo> iTunesMetadataInfos = new List<iTunesMetadataInfo>();
@@ -94,7 +94,7 @@ namespace Basic
             return iTunesMetadataInfos;
         }
 
-        public static void iTunesBackup2FileSystem(string backupPath, string savePath)
+        static void iTunesBackup2FileSystem(string backupPath, string savePath)
         {
             string manifestDbPath = Path.Combine(backupPath, ManifestDbFile);
             SqliteConnection sqliteConnection = new SqliteConnection($"Data Source={manifestDbPath}");
