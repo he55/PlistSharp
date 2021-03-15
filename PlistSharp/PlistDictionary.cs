@@ -99,14 +99,19 @@ namespace PlistSharp
                     break;
                 }
 
+#if NET5_0_OR_GREATER
+                string dicKey = Marshal.PtrToStringUTF8(key);
+#else
                 string dicKey = StringHelper.PtrToStringUTF8(key);
+#endif
+                Marshal.FreeHGlobal(key);
+
                 if (dicKey == null)
                 {
                     throw new NullReferenceException();
                 }
 
                 _map[dicKey] = FromPlist(subnode, this);
-                Marshal.FreeHGlobal(key);
             }
 
             Marshal.FreeHGlobal(it);

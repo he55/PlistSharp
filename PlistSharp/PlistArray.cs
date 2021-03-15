@@ -88,30 +88,27 @@ namespace PlistSharp
 
         protected override void Fill()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                uint length = plist.plist_array_get_size(_node);
-                for (uint i = 0; i < length; i++)
-                {
-                    plist_t item = plist.plist_array_get_item(_node, i);
-                    _array.Add(FromPlist(item, this));
-                }
-            }
-            else
-            {
-                plist.plist_array_new_iter(_node, out plist_array_iter iter);
+#if NETFRAMEWORK
+            plist.plist_array_new_iter(_node, out plist_array_iter iter);
 
-                while (true)
+            while (true)
+            {
+                plist.plist_array_next_item(_node, iter, out plist_t subnode);
+                if (subnode == IntPtr.Zero)
                 {
-                    plist.plist_array_next_item(_node, iter, out plist_t subnode);
-                    if (subnode == IntPtr.Zero)
-                    {
-                        break;
-                    }
-                    _array.Add(FromPlist(subnode, this));
+                    break;
                 }
-                Marshal.FreeHGlobal(iter);
+                _array.Add(FromPlist(subnode, this));
             }
+            Marshal.FreeHGlobal(iter);
+#else
+            uint length = plist.plist_array_get_size(_node);
+            for (uint i = 0; i < length; i++)
+            {
+                plist_t item = plist.plist_array_get_item(_node, i);
+                _array.Add(FromPlist(item, this));
+            }
+#endif
         }
     }
 }

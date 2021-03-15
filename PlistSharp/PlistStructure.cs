@@ -16,11 +16,21 @@ namespace PlistSharp
         public string ToPlistXml()
         {
             plist.plist_to_xml(_node, out IntPtr ptr, out uint length);
-            string xml = StringHelper.PtrToStringUTF8(ptr, (int)length);
 
+#if NET5_0_OR_GREATER
+            string xml = Marshal.PtrToStringUTF8(ptr, (int)length);
             Marshal.FreeHGlobal(ptr);
 
             return xml;
+#else
+            unsafe
+            {
+                string xml = Encoding.UTF8.GetString((byte*)ptr, (int)length);
+                Marshal.FreeHGlobal(ptr);
+
+                return xml;
+            }
+#endif
         }
 
         public byte[] ToPlistBin()

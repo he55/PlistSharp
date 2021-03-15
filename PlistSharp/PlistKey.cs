@@ -24,13 +24,19 @@ namespace PlistSharp
             get
             {
                 plist.plist_get_key_val(_node, out IntPtr ptr);
+
+#if NET5_0_OR_GREATER
+                string value = Marshal.PtrToStringUTF8(ptr);
+#else
                 string value = StringHelper.PtrToStringUTF8(ptr);
+#endif
+                Marshal.FreeHGlobal(ptr);
+
                 if (value == null)
                 {
                     throw new NullReferenceException();
                 }
 
-                Marshal.FreeHGlobal(ptr);
                 return value;
             }
             set => plist.plist_set_key_val(_node, value);

@@ -16,13 +16,5 @@ namespace PlistSharp
                 return Encoding.UTF8.GetString((byte*)ptr, strlen(ptr));
             }
         }
-
-        public static string PtrToStringUTF8(IntPtr ptr, int byteLen)
-        {
-            unsafe
-            {
-                return Encoding.UTF8.GetString((byte*)ptr, byteLen);
-            }
-        }
     }
 }
