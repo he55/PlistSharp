@@ -1,19 +1,21 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Text;
 
 namespace PlistSharp
 {
     public class StringHelper
     {
-        [DllImport("ucrtbased")]
-        private static extern int strlen(IntPtr str);
-
         public static string PtrToStringUTF8(IntPtr ptr)
         {
             unsafe
             {
-                return Encoding.UTF8.GetString((byte*)ptr, strlen(ptr));
+                int len = 0;
+                byte* p = (byte*)ptr;
+                while (*p++ != 0)
+                {
+                    len++;
+                }
+                return Encoding.UTF8.GetString((byte*)ptr, len);
             }
         }
     }
