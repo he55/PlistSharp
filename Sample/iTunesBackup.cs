@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Dapper;
 using Microsoft.Data.Sqlite;
@@ -107,7 +108,20 @@ namespace Sample
                 {
                     string origPath = Path.Combine(_backupPath, item.fileID.Substring(0, 2), item.fileID);
                     string relativeSafePath = item.relativePath.Replace("/", "\\").Replace(":", "__").Replace("?", "__").Replace("|", "__");
+
+#if NETFRAMEWORK
                     string newSafePath = "\\\\?\\" + Path.Combine(_savePath, item.domain, relativeSafePath);
+#else
+                    string newSafePath;
+                    if (OperatingSystem.IsWindows())
+                    {
+                        newSafePath = "\\\\?\\" + Path.Combine(_savePath, item.domain, relativeSafePath);
+                    }
+                    else
+                    {
+                        newSafePath = Path.Combine(_savePath, item.domain, relativeSafePath);
+                    }
+#endif
 
                     if (File.Exists(origPath))
                     {
