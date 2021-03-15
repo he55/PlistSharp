@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using PlistSharp;
 
-namespace Basic
+namespace Sample
 {
     public class iTunesBackupInfo
     {

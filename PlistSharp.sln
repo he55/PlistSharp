@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlistSharp", "PlistSharp\PlistSharp.csproj", "{CB41F710-9BD4-4609-BE29-DC813561F99F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basic", "Basic\Basic.csproj", "{9DC0D426-2F4F-4BDB-95FC-7A6C082E2064}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample", "Sample\Sample.csproj", "{9DC0D426-2F4F-4BDB-95FC-7A6C082E2064}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

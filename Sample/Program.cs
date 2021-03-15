@@ -1,4 +1,4 @@
-namespace Basic
+namespace Sample
 {
     class Program
     {

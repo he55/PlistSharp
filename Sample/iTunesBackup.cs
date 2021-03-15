@@ -4,7 +4,7 @@ using Dapper;
 using Microsoft.Data.Sqlite;
 using PlistSharp;
 
-namespace Basic
+namespace Sample
 {
     public class iTunesBackup
     {
