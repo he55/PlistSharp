@@ -4,9 +4,9 @@ using PlistSharp;
 
 namespace Basic
 {
-    public class BackupInfo
+    public class iTunesBackupInfo
     {
-        public PlistDictionary Applications { get; set; }
+        public List<iTunesMetadataInfo> Applications { get; set; } = new List<iTunesMetadataInfo>();
         public string BuildVersion { get; set; }
         public string DeviceName { get; set; }
         public string DisplayName { get; set; }

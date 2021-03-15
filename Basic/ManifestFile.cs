@@ -1,6 +1,6 @@
 ﻿namespace Basic
 {
-    public class Files
+    public class ManifestFile
     {
         public string fileID { get; set; }
         public string domain { get; set; }
