@@ -142,5 +142,35 @@ namespace Sample
                 Console.Write($"\r{((double)i / count):P2} ({i}/{count})");
             }
         }
+
+        public string GetFilePath(string relativePath, string domain, string bundleId = null)
+        {
+            switch (domain)
+            {
+                case FileDomain.AppDomain:
+                case FileDomain.AppDomainGroup:
+                case FileDomain.AppDomainPlugin:
+                case FileDomain.SysContainerDomain:
+                case FileDomain.SysSharedContainerDomain:
+                    if (string.IsNullOrEmpty(bundleId))
+                    {
+                        throw new ArgumentException();
+                    }
+                    domain = $"{domain}-{bundleId}";
+                    break;
+            }
+
+            string manifestDbPath = Path.Combine(_backupPath, ManifestDbFile);
+            SqliteConnection sqliteConnection = new SqliteConnection($"Data Source={manifestDbPath}");
+            string fileID = sqliteConnection.QueryFirstOrDefault<string>(
+                "SELECT fileID FROM Files WHERE domain=@domain AND relativePath=@relativePath",
+                new { domain, relativePath });
+
+            if (string.IsNullOrEmpty(fileID))
+            {
+                return null;
+            }
+            return Path.Combine(_backupPath, fileID.Substring(0, 2), fileID);
+        }
     }
 }
