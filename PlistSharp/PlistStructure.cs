@@ -17,7 +17,7 @@ namespace PlistSharp
         {
             plist.plist_to_xml(_node, out IntPtr ptr, out uint length);
 
-#if NET5_0_OR_GREATER
+#if NETCOREAPP
             string xml = Marshal.PtrToStringUTF8(ptr, (int)length);
             Marshal.FreeHGlobal(ptr);
 

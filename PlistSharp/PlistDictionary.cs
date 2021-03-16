@@ -99,7 +99,7 @@ namespace PlistSharp
                     break;
                 }
 
-#if NET5_0_OR_GREATER
+#if NETCOREAPP
                 string dicKey = Marshal.PtrToStringUTF8(key);
 #else
                 string dicKey = StringHelper.PtrToStringUTF8(key);

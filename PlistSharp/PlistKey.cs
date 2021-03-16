@@ -25,7 +25,7 @@ namespace PlistSharp
             {
                 plist.plist_get_key_val(_node, out IntPtr ptr);
 
-#if NET5_0_OR_GREATER
+#if NETCOREAPP
                 string value = Marshal.PtrToStringUTF8(ptr);
 #else
                 string value = StringHelper.PtrToStringUTF8(ptr);
