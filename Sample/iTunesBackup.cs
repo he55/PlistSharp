@@ -97,10 +97,10 @@ namespace Sample
             SqliteConnection sqliteConnection = new SqliteConnection($"Data Source={manifestDbPath}");
             IEnumerable<ManifestFile> manifestFiles = sqliteConnection.Query<ManifestFile>("SELECT * FROM Files ORDER BY relativePath");
 
-            int v = sqliteConnection.QueryFirst<int>("SELECT count(*) FROM Files");
-            int n = 0;
+            int count = sqliteConnection.QueryFirst<int>("SELECT count(*) FROM Files");
+            int i = 0;
 
-            Console.Write($"0.00% (0/{v})");
+            Console.Write($"0.00% (0/{count})");
 
             foreach (var item in manifestFiles)
             {
@@ -138,8 +138,8 @@ namespace Sample
                     }
                 }
 
-                n++;
-                Console.Write($"\r{((double)n / v):P} ({n}/{v})");
+                i++;
+                Console.Write($"\r{((double)i / count):P2} ({i}/{count})");
             }
         }
     }
