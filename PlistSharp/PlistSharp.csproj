@@ -3,19 +3,22 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.7</Version>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <Authors>he55</Authors>
+    <Version>1.7</Version>
     <Description>.NET bindings for libplist.</Description>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/he55</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageIcon>Icon.png</PackageIcon>
-    <RepositoryUrl>https://github.com/he55</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
     <PackageTags>plist</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <None Include="../Icon.png" Pack="True" PackagePath="/" />
     <None Include="runtimes/**" CopyToOutputDirectory="PreserveNewest" Pack="True" PackagePath="runtimes/" />
