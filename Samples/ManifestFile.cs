@@ -1,4 +1,4 @@
-namespace Sample
+namespace Samples
 {
     public class ManifestFile
     {
