@@ -66,13 +66,6 @@ indent_size = 4
 indent_size = 4
 end_of_line = lf
 
-[*.{razor,cshtml}]
-charset = utf-8-bom
-
-[*.{cs,vb}]
-# CA1305: Specify IFormatProvider
-dotnet_diagnostic.CA1305.severity = error
-
 [*.{cs,vb}]
 # CA2012: Use ValueTask correctly
 dotnet_diagnostic.CA2012.severity = warning
