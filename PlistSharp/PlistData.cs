@@ -39,8 +39,8 @@ namespace PlistSharp
             set
             {
                 GCHandle handle = GCHandle.Alloc(value, GCHandleType.Pinned);
-
                 IntPtr ptr = handle.AddrOfPinnedObject();
+
                 plist.plist_set_data_val(_node, ptr, (ulong)value.Length);
 
                 handle.Free();

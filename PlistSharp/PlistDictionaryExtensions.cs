@@ -2,11 +2,11 @@ namespace PlistSharp
 {
     public static class PlistDictionaryExtensions
     {
-        public static PlistNode GetValueOrDefault(this PlistDictionary @this, string key)
+        public static PlistNode GetValueOrDefault(this PlistDictionary dict, string key)
         {
-            if (@this.Keys.Contains(key))
+            if (dict.Keys.Contains(key))
             {
-                return @this[key];
+                return dict[key];
             }
             return null;
         }

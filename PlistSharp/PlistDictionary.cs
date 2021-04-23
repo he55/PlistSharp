@@ -104,6 +104,7 @@ namespace PlistSharp
 #else
                 string dicKey = StringHelper.PtrToStringUTF8(key);
 #endif
+
                 Marshal.FreeHGlobal(key);
 
                 if (dicKey == null)

@@ -30,6 +30,7 @@ namespace PlistSharp
 #else
                 string value = StringHelper.PtrToStringUTF8(ptr);
 #endif
+
                 Marshal.FreeHGlobal(ptr);
 
                 if (value == null)
