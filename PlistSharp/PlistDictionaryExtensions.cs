@@ -1,4 +1,4 @@
-﻿namespace PlistSharp
+namespace PlistSharp
 {
     public static class PlistDictionaryExtensions
     {

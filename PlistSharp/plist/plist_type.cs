@@ -1,4 +1,4 @@
-﻿namespace PlistSharp
+namespace PlistSharp
 {
     /// <summary>
     /// The enumeration of plist node types.
