@@ -10,12 +10,12 @@
   <PropertyGroup>
     <Authors>he55</Authors>
     <Version>1.8</Version>
-    <Description>.NET bindings for libplist.</Description>
+    <Description>A library to handle Apple Property List format in binary or XML</Description>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/he55</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageIcon>Icon.png</PackageIcon>
-    <PackageTags>plist</PackageTags>
+    <PackageTags>plist;libplist</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
