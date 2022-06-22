@@ -1,25 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>1.5</Version>
     <Authors>he55</Authors>
-    <Version>1.1</Version>
     <Description>.NET bindings for libplist.</Description>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageIcon>Icon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/he55</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <PackageTags>plist</PackageTags>
-    <RepositoryUrl>https://github.com/he55/PlistSharp</RepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>packageicon.png</PackageIcon>
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <None Include="runtimes/**" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="runtimes/" />
-    <None Include="../packageicon.png" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="/" />
+    <None Include="../Icon.png" Pack="True" PackagePath="/" />
+    <None Include="runtimes/**" CopyToOutputDirectory="PreserveNewest" Pack="True" PackagePath="runtimes/" />
   </ItemGroup>
 
 </Project>

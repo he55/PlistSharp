@@ -42,17 +42,20 @@ namespace PlistSharp
             return ImportStruct(root);
         }
 
-        private static unsafe PlistStructure FromPlistBin(byte[] bin)
+        public static PlistStructure FromPlistBin(byte[] bin)
         {
             uint length = (uint)bin.Length;
 
-            fixed (byte* p = bin)
+            unsafe
             {
-                plist.plist_from_bin((IntPtr)p, length, out plist_t root);
-                PlistStructure structure = ImportStruct(root);
-                structure.IsBinary = plist.plist_is_binary((IntPtr)p, length) != 0;
+                fixed (byte* p = bin)
+                {
+                    plist.plist_from_bin((IntPtr)p, length, out plist_t root);
+                    PlistStructure structure = ImportStruct(root);
+                    structure.IsBinary = plist.plist_is_binary((IntPtr)p, length) != 0;
 
-                return structure;
+                    return structure;
+                }
             }
         }
 
