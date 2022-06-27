@@ -46,10 +46,22 @@ namespace PlistSharp
 
         public static PlistStructure FromPlistXml(string xml)
         {
-            int length = Encoding.UTF8.GetByteCount(xml);
-            plist.plist_from_xml(xml, (uint)length, out plist_t root);
+            byte[] bytes = Encoding.UTF8.GetBytes(xml);
+            return FromPlistXml(bytes);
+        }
 
-            return ImportStruct(root);
+        public static PlistStructure FromPlistXml(byte[] bin)
+        {
+            uint length = (uint)bin.Length;
+
+            unsafe
+            {
+                fixed (byte* p = bin)
+                {
+                    plist.plist_from_xml((IntPtr)p, length, out plist_t root);
+                    return ImportStruct(root);
+                }
+            }
         }
 
         public static PlistStructure FromPlistBin(byte[] bin)

@@ -629,7 +629,7 @@ namespace PlistSharp
         /// <param name="length">length of the buffer to read.</param>
         /// <param name="plist">a pointer to the imported plist.</param>
         [DllImport(LibPlist)]
-        public static extern void plist_from_xml(/* const char * */ string plist_xml, uint length, out plist_t plist);
+        public static extern void plist_from_xml(/* const char * */ IntPtr plist_xml, uint length, out plist_t plist);
 
 
         /// <summary>

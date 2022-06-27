@@ -4,11 +4,11 @@ namespace Samples
     {
         static void Main(string[] args)
         {
-            string backupPath = @"C:\Users\Admin\Desktop\iphone7plus\675e9d258cfee8d7023e5e78ceefd4cbdbc16bf1";
+            string backupPath = @"C:\Users\luckh\AppData\Roaming\Apple Computer\MobileSync\Backup\27ce173b4c4224b63ba7fb8666e3450045b0a310";
             iTunesBackup backup = new iTunesBackup(backupPath);
-            iTunesBackupInfo iTunesBackupInfo = backup.GetiTunesBackupInfo();
+            iTunesBackupInfo backupInfo = backup.GetiTunesBackupInfo();
             //backup.MakeFileSystem();
-            string v = backup.GetFilePath("Documents/FaceConfig/sysface_res/static/290@2x.png", FileDomain.AppDomain, "com.tencent.tim");
+            string filePath = backup.GetFilePath("Documents/FaceConfig/sysface_res/static/290@2x.png", FileDomain.AppDomain, "com.tencent.tim");
         }
     }
 }

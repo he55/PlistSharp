@@ -67,7 +67,7 @@ namespace Samples
             foreach (var item in (PlistDictionary)infoDict["Applications"])
             {
                 PlistDictionary value = (PlistDictionary)item.Value;
-                PlistDictionary iTunesMetadata = (PlistDictionary)PlistDictionary.FromPlistBin(((PlistData)value["iTunesMetadata"]).Value);
+                PlistDictionary iTunesMetadata = (PlistDictionary)PlistDictionary.FromPlistXml(((PlistData)value["iTunesMetadata"]).Value);
 
                 iTunesMetadataInfo iTunesMetadataInfo = new iTunesMetadataInfo
                 {
