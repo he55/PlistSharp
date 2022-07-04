@@ -26,7 +26,6 @@ namespace PlistSharp
                 tv_sec = tv_sec,
                 tv_usec = tv_usec
             };
-
             return new PlistDate(value);
         }
 
@@ -37,10 +36,7 @@ namespace PlistSharp
                 plist.plist_get_date_val(_node, out int tv_sec, out int tv_usec);
                 return s_baseDateTime.AddSeconds(tv_sec);
             }
-            set
-            {
-                plist.plist_set_date_val(_node, (int)(value - s_baseDateTime).TotalSeconds, 0);
-            }
+            set => plist.plist_set_date_val(_node, (int)(value - s_baseDateTime).TotalSeconds, 0);
         }
     }
 }

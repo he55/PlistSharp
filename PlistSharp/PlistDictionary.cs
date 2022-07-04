@@ -96,7 +96,8 @@ namespace PlistSharp
                 plist.plist_dict_next_item(_node, it, out IntPtr key, out plist_t subnode);
                 if (key == IntPtr.Zero)
                 {
-                    break;
+                    Marshal.FreeHGlobal(it);
+                    return;
                 }
 
 #if NETCOREAPP
@@ -109,13 +110,12 @@ namespace PlistSharp
 
                 if (dicKey == null)
                 {
+                    Marshal.FreeHGlobal(it);
                     throw new NullReferenceException();
                 }
 
                 _map[dicKey] = FromPlist(subnode, this);
             }
-
-            Marshal.FreeHGlobal(it);
         }
     }
 }

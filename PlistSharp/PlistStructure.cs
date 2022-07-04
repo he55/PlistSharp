@@ -20,14 +20,12 @@ namespace PlistSharp
 #if NETCOREAPP
             string xml = Marshal.PtrToStringUTF8(ptr, (int)length);
             Marshal.FreeHGlobal(ptr);
-
             return xml;
 #else
             unsafe
             {
                 string xml = Encoding.UTF8.GetString((byte*)ptr, (int)length);
                 Marshal.FreeHGlobal(ptr);
-
                 return xml;
             }
 #endif
@@ -52,13 +50,11 @@ namespace PlistSharp
 
         public static PlistStructure FromPlistXml(byte[] bin)
         {
-            uint length = (uint)bin.Length;
-
             unsafe
             {
                 fixed (byte* p = bin)
                 {
-                    plist.plist_from_xml((IntPtr)p, length, out plist_t root);
+                    plist.plist_from_xml((IntPtr)p, (uint)bin.Length, out plist_t root);
                     return ImportStruct(root);
                 }
             }
@@ -66,16 +62,15 @@ namespace PlistSharp
 
         public static PlistStructure FromPlistBin(byte[] bin)
         {
-            uint length = (uint)bin.Length;
-
             unsafe
             {
                 fixed (byte* p = bin)
                 {
+                    uint length = (uint)bin.Length;
+
                     plist.plist_from_bin((IntPtr)p, length, out plist_t root);
                     PlistStructure structure = ImportStruct(root);
                     structure.IsBinary = plist.plist_is_binary((IntPtr)p, length) != 0;
-
                     return structure;
                 }
             }
@@ -89,21 +84,23 @@ namespace PlistSharp
             }
         }
 
-        public static unsafe PlistStructure FromFile(Stream stream)
+        public static PlistStructure FromFile(Stream stream)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 stream.CopyTo(memoryStream);
 
-                uint length = (uint)memoryStream.Length;
-
-                fixed (byte* p = memoryStream.ToArray())
+                unsafe
                 {
-                    plist.plist_from_memory(p, length, out plist_t root);
-                    PlistStructure structure = ImportStruct(root);
-                    structure.IsBinary = plist.plist_is_binary(p, length) != 0;
+                    fixed (byte* p = memoryStream.ToArray())
+                    {
+                        uint length = (uint)memoryStream.Length;
 
-                    return structure;
+                        plist.plist_from_memory(p, length, out plist_t root);
+                        PlistStructure structure = ImportStruct(root);
+                        structure.IsBinary = plist.plist_is_binary(p, length) != 0;
+                        return structure;
+                    }
                 }
             }
         }
@@ -111,7 +108,6 @@ namespace PlistSharp
         private static PlistStructure ImportStruct(plist_t root)
         {
             plist_type type = plist.plist_get_node_type(root);
-
             switch (type)
             {
                 case plist_type.PLIST_ARRAY:
