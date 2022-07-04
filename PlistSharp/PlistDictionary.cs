@@ -100,12 +100,7 @@ namespace PlistSharp
                     return;
                 }
 
-#if NETCOREAPP
-                string dicKey = Marshal.PtrToStringUTF8(key);
-#else
                 string dicKey = StringHelper.PtrToStringUTF8(key);
-#endif
-
                 Marshal.FreeHGlobal(key);
 
                 if (dicKey == null)

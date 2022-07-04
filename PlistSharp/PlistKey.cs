@@ -24,13 +24,7 @@ namespace PlistSharp
             get
             {
                 plist.plist_get_key_val(_node, out IntPtr ptr);
-
-#if NETCOREAPP
-                string value = Marshal.PtrToStringUTF8(ptr);
-#else
                 string value = StringHelper.PtrToStringUTF8(ptr);
-#endif
-
                 Marshal.FreeHGlobal(ptr);
 
                 if (value == null)
