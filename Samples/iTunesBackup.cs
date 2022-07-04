@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using PlistSharp;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Samples
 {
@@ -69,7 +69,7 @@ namespace Samples
                 PlistDictionary value = (PlistDictionary)item.Value;
                 PlistDictionary iTunesMetadata = (PlistDictionary)PlistDictionary.FromPlistXml(((PlistData)value["iTunesMetadata"]).Value);
 
-                iTunesMetadataInfo iTunesMetadataInfo = new iTunesMetadataInfo
+                iTunesMetadataInfo metadataInfo = new iTunesMetadataInfo
                 {
                     bundleId = item.Key,
                     bundleShortVersionString = ((PlistString)iTunesMetadata.GetValueOrDefault("bundleShortVersionString"))?.Value,
@@ -78,10 +78,9 @@ namespace Samples
                     iconPath = Path.Combine(_savePath, $"{item.Key}.png"),
                     accountInfo = ((PlistString)((PlistDictionary)((PlistDictionary)iTunesMetadata["com.apple.iTunesStore.downloadInfo"])["accountInfo"])["AppleID"]).Value
                 };
+                backupInfo.Applications.Add(metadataInfo);
 
-                backupInfo.Applications.Add(iTunesMetadataInfo);
-
-                using (FileStream fileStream = new FileStream(iTunesMetadataInfo.iconPath, FileMode.Create, FileAccess.Write))
+                using (FileStream fileStream = new FileStream(metadataInfo.iconPath, FileMode.Create, FileAccess.Write))
                 {
                     byte[] buffer = ((PlistData)value["PlaceholderIcon"]).Value;
                     fileStream.Write(buffer, 0, buffer.Length);
