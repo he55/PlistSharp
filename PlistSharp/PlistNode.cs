@@ -14,7 +14,6 @@ namespace PlistSharp
         public static PlistNode FromPlist(plist_t node, PlistStructure parent = null)
         {
             plist_type type = plist.plist_get_node_type(node);
-
             switch (type)
             {
                 case plist_type.PLIST_DICT: return new PlistDictionary(node, parent);
@@ -40,14 +39,10 @@ namespace PlistSharp
             if (!_disposed)
             {
                 if (disposing)
-                {
                     _parent = null;
-                }
 
                 if (_parent == null)
-                {
                     plist.plist_free(_node);
-                }
 
                 _node = (plist_t)IntPtr.Zero;
                 _disposed = true;

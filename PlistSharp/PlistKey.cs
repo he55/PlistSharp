@@ -34,10 +34,7 @@ namespace PlistSharp
                 Marshal.FreeHGlobal(ptr);
 
                 if (value == null)
-                {
                     throw new NullReferenceException();
-                }
-
                 return value;
             }
             set => plist.plist_set_key_val(_node, value);
